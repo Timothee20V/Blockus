@@ -23,4 +23,4 @@ class Joueur:
                 piece_Select.append(ligne.strip().split(' '))
             #suppression de la pièce dans la liste des pièces restantes
             self.restePieces(piece_Numero) 
-        return piece_Select
+        return piece_Selectv
