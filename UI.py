@@ -25,7 +25,6 @@ def jeu():
     fenetre.bind('<Escape>', lambda e: fenetre.destroy())
 
     fenetre.mainloop()
-    #ENNNNCCCCUUULLLLEEEEEEEEE
 
 
 jeu()
