@@ -3,18 +3,28 @@ from tkinter import *
 
 
 def jeu():
-    fen = Tk()
-    fen.title("Blokus")
-    fen.geometry("1920x1080")
-    # fen.resizable(width=0, height=0)
+    # Création de la fenetre du jeu
+    fenetre = Tk()
+    # Le nom du jeu
+    fenetre.title("Blokus")
+    # La taille de la fenetre
+    fenetre.attributes('-fullscreen', True)
 
-    grille = Canvas(fen, width=1000, height=1080, bg='gray')
-    grille.pack(side= 'left')
+    # Zone de dessin pour le jeu
+    leJeu = Frame(fenetre, width=500, height=400, bg='green')
+    leJeu.pack()
 
-    information = Canvas(fen, width=920, height=1080, bg='blue')
-    information.pack(side='right')
+    # Zone de dessin pour la grille
+    laGrille = Frame(leJeu, width=200, height=200, bg='red')
+    laGrille.pack()
 
-    fen.mainloop()
+    # Zone de dessin pour les informations
+    informations = Frame(fenetre, width=500, height=400, bg='blue')
+    informations.pack()
+
+    fenetre.bind('<Escape>', lambda e: fenetre.destroy())
+
+    fenetre.mainloop()
 
 
 jeu()
