@@ -17,18 +17,12 @@ class Joueur:
 
     #récupération du modèle de la pièce et suppression de celle-ci dans le tableau 
     def creationPieces (self,piece_Numero):
-
         #référencement des pièces disponibles
-        piece_Select = []
-
+        piece_Selectionnee_Model = []
         #lecture du fichier choisit et récupération du modèle
         with open(self.nom_Piece_Liste[piece_Numero], "r") as f:
             for ligne in f:
-                piece_Select.append(ligne.strip().split(' '))
+                piece_Selectionnee_Model.append(ligne.strip().split(' '))
             #suppression de la pièce dans la liste des pièces restantes
-            self.restePieces(piece_Numero) 
-        return piece_Select
-
-bleu = Joueur("bleu")
-rouge = Joueur("rouge")
-print(bleu.retourDictionnaire())
+            self.restePieces(piece_Numero)
+        return piece_Selectionnee_Model
