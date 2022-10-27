@@ -30,10 +30,16 @@ class Joueur:
             for longueur in range(5):
                 for largeur in range(5):
                     if(piece_Selectionnee[longueur][largeur] == 1):
-                        piece_Selectionnee[longueur][largeur] = "R" 
+                        piece_Selectionnee[longueur][largeur] = "J" 
+        elif(self == "Vert"):
+            for longueur in range(5):
+                for largeur in range(5):
+                    if(piece_Selectionnee[longueur][largeur] == 1):
+                        piece_Selectionnee[longueur][largeur] = "V" 
+        return piece_Selectionnee
 
     #récupération du modèle de la pièce et suppression de celle-ci dans le tableau 
-    def creationPieces(self,piece_Numero):
+    def creationPieces(self,piece_Numero):  
         #référencement des pièces disponibles
         piece_Selectionnee_Model = []
         #lecture du fichier choisit et récupération du modèle
@@ -42,7 +48,7 @@ class Joueur:
                 piece_Selectionnee_Model.append(ligne.strip().split(' '))
             #suppression de la pièce dans la liste des pièces restantes
             self.restePieces(piece_Numero)
-            piece_Selectionnee_Model = self.
+            piece_Selectionnee_Model = self.couleurEquipe(piece_Selectionnee_Model)
         return piece_Selectionnee_Model
 
     def rotation_Pieces(self,piece_Selectionnee,rotation):
