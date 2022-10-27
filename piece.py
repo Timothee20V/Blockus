@@ -31,11 +31,6 @@ class Joueur:
     def suppression_Piece(self,numero_Piece):
         return self.pieces[numero_Piece]
 
-    # suppression de la pièce utilisé
-    def restePieces(self, piece_Utilisée):
-        del self.nom_Piece_Liste[piece_Utilisée]
-        #print(self.nom_Piece_Liste)
-
     # change le sens de la piece
     def rotation_Pieces(self, piece_Selectionnee, rotation):
         piece_Retournee = piece_Selectionnee
@@ -55,15 +50,11 @@ class Joueur:
             laPiece = []
             for x in range(0, len(self.pieces[i])):
                 for y in range(0, len(self.pieces[i])):
-                    if self.pieces[i][x][y] == self.initiale:
+                    if self.pieces[i][x][y] == '1':
                         coord = x, y
                         laPiece.append(coord)
             piecesEnCoord.append(laPiece)
         return piecesEnCoord
 
-
 Bleu = Joueur("Bleu","B")
-print(Bleu.pieceEnCoord()[5])
-
-
-
+print(Bleu.pieces)
