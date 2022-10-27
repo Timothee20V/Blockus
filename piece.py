@@ -1,7 +1,8 @@
 class Joueur:
     # initialisation des paramètres
-    def __init__(self, couleur):
+    def __init__(self, couleur,initiale):
         self.couleur = couleur
+        self.initiale = initiale
         self.nom_Piece_Liste = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
                                 5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7",
                                 8: "pieces/piece8", 9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11",
@@ -19,26 +20,10 @@ class Joueur:
                 for ligne in f:
                     piece_Selectionnee_Model.append(ligne.strip().split(' '))
                     #change les 1 en RJVB
-                if(self.couleur == "Bleu"):
-                    for longueur in range(0,len(piece_Selectionnee_Model)):
-                        for largeur in range(0,len(piece_Selectionnee_Model[longueur])):
-                            if ( piece_Selectionnee_Model[longueur][largeur] == "1"):
-                                piece_Selectionnee_Model[longueur][largeur] = "B"                                
-                elif(self.couleur == "Rouge"):
-                    for longueur in range(0,len(piece_Selectionnee_Model)):
-                        for largeur in range(0,len(piece_Selectionnee_Model[longueur])):
-                            if ( piece_Selectionnee_Model[longueur][largeur] == "1"):
-                                    piece_Selectionnee_Model[longueur][largeur] = "R"
-                elif(self.couleur == "Jaune"):
-                    for longueur in range(0,len(piece_Selectionnee_Model)):
-                        for largeur in range(0,len(piece_Selectionnee_Model[longueur])):
-                            if( piece_Selectionnee_Model[longueur][largeur] == "1"):
-                                    piece_Selectionnee_Model[longueur][largeur] = "J" 
-                elif(self.couleur == "Vert"):
-                    for longueur in range(0,len(piece_Selectionnee_Model)):
-                        for largeur in range(0,len(piece_Selectionnee_Model[longueur])):
-                            if ( piece_Selectionnee_Model[longueur][largeur] == "1"):
-                                    piece_Selectionnee_Model[longueur][largeur] = "V"
+                for longueur in range(0,len(piece_Selectionnee_Model)):
+                    for largeur in range(0,len(piece_Selectionnee_Model[longueur])):
+                        if ( piece_Selectionnee_Model[longueur][largeur] == "1"):
+                            piece_Selectionnee_Model[longueur][largeur] = self.initiale                                
                 self.pieces.append(piece_Selectionnee_Model)
                 piece_Selectionnee_Model = []
 
@@ -76,7 +61,7 @@ class Joueur:
             piecesEnCoord.append(laPiece)
         return piecesEnCoord
 
-Bleu = Joueur("Bleu")
+Bleu = Joueur("Bleu","B")
 print(Bleu.pieces)
 
 
