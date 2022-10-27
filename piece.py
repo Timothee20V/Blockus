@@ -55,13 +55,15 @@ class Joueur:
             laPiece = []
             for x in range(0, len(self.pieces[i])):
                 for y in range(0, len(self.pieces[i])):
-                    if self.pieces[i][x][y] == '1':
+                    if self.pieces[i][x][y] == self.initiale:
                         coord = x, y
                         laPiece.append(coord)
             piecesEnCoord.append(laPiece)
         return piecesEnCoord
 
+
 Bleu = Joueur("Bleu","B")
-print(Bleu.pieces)
+print(Bleu.pieceEnCoord()[5])
+
 
 
