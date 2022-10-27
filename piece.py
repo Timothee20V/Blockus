@@ -19,23 +19,23 @@ class Joueur:
         del self.nom_Piece_Liste[piece_Utilisée]
         print(self.nom_Piece_Liste)
 
-    def couleurEquipe(self, piece_Selectionnee):
-        if (self == "Bleu"):
+    def couleurEquipe(self,piece_Selectionnee):
+        if(self == "Bleu"):
             for longueur in range(5):
                 for largeur in range(5):
                     if (piece_Selectionnee[longueur][largeur] == 1):
                         piece_Selectionnee[longueur][largeur] = "B"
-        elif (self == "Rouge"):
+        elif(self == "Rouge"):
             for longueur in range(5):
                 for largeur in range(5):
                     if (piece_Selectionnee[longueur][largeur] == 1):
                         piece_Selectionnee[longueur][largeur] = "R"
-        elif (self == "Jaune"):
+        elif(self == "Jaune"):
             for longueur in range(5):
                 for largeur in range(5):
-                    if (piece_Selectionnee[longueur][largeur] == 1):
-                        piece_Selectionnee[longueur][largeur] = "J"
-        elif (self == "Vert"):
+                    if(piece_Selectionnee[longueur][largeur] == 1):
+                        piece_Selectionnee[longueur][largeur] = "J" 
+        elif(self == "Vert"):
             for longueur in range(5):
                 for largeur in range(5):
                     if (piece_Selectionnee[longueur][largeur] == 1):
