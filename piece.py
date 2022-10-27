@@ -9,6 +9,7 @@ class Joueur:
                                 16: "pieces/piece16", 17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19",
                                 20: "pieces/piece20", 21: "pieces/piece21"}
         self.pieces = []
+        self.piecesCoord = []
 
     # retourne le contenu du dictionnaire
     def retourDictionnaire(self):
@@ -68,7 +69,10 @@ class Joueur:
         return piece_Retournee
 
     def pieceEnCoord(self):
-        self.
+        for i in len(self.nom_Piece_Liste):
+            for x in len(self.pieces[0]):
+                for y in len(self.pieces[0]):
+                    self.piecesCoord.append()
 
 
 Bleu = Joueur("Bleu")
