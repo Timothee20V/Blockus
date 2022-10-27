@@ -11,6 +11,7 @@ class Joueur:
         self.pieces = []
         self.piecesCoord = []
 
+
     # retourne le contenu du dictionnaire
     def retourDictionnaire(self):
         return self.nom_Piece_Liste
@@ -18,7 +19,7 @@ class Joueur:
     # suppression de la pièce utilisé
     def restePieces(self, piece_Utilisée):
         del self.nom_Piece_Liste[piece_Utilisée]
-        print(self.nom_Piece_Liste)
+        #print(self.nom_Piece_Liste)
 
     def couleurEquipe(self,piece_Selectionnee):
         if(self == "Bleu"):
@@ -69,11 +70,18 @@ class Joueur:
         return piece_Retournee
 
     def pieceEnCoord(self):
-        for i in len(self.nom_Piece_Liste):
-            for x in len(self.pieces[0]):
-                for y in len(self.pieces[0]):
-                    self.piecesCoord.append()
+        piecesEnCoord = []
+        for i in range(0, len(self.pieces)):
+            laPiece = []
+            for x in range(0, len(self.pieces[i])):
+                for y in range(0, len(self.pieces[i])):
+                    if self.pieces[i][x][y] == '1':
+                        coord = x, y
+                        laPiece.append(coord)
+            piecesEnCoord.append(laPiece)
+        return piecesEnCoord
 
 
 Bleu = Joueur("Bleu")
-print(Bleu.creationPieces(5))
+print(Bleu.pieces)
+
