@@ -7,9 +7,9 @@ def creationGrilleAffiche(leJeu):
     tailleCase = 40
     for i in range(1,20):
         leJeu.create_line(i * tailleCase + offsetX, offsetY, i * tailleCase + offsetX, 800 + offsetY)
+
     for i in range(1,20):
         leJeu.create_line(offsetX, offsetY + i * tailleCase, offsetX + 800, offsetY + i * tailleCase)
-
 
 
 def jeu():

@@ -58,7 +58,7 @@ class Joueur:
 
         piece_Symetrique = [[laPiece[j][i] for j in range(len(laPiece))] for i in range(len(laPiece[0]) - 1, -1, -1)]
 
-        self.pieces[piece_Selectionnee] = piece_Retournee
+        self.pieces[piece_Selectionnee] = piece_Symetrique
 
 
 Bleu = Joueur("Bleu", "B")
