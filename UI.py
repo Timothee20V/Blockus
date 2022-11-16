@@ -2,7 +2,7 @@ from tkinter import *
 
 
 class Grille:
-    def __int__(self, x, y, size):
+    def __init__(self, x, y, size):
         self.offsetX = x
         self.offsetY = y
         self.tailleCase = size
@@ -23,11 +23,7 @@ class Grille:
                               )
 
 
-#100 30 40
-jeu = Grille()
-jeu.offsetX = 100
-jeu.offsetY = 30
-jeu.tailleCase = 40
+jeu = Grille(100, 30, 40)
 
 fenetre = Tk()
 # Le nom du jeu
