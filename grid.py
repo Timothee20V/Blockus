@@ -1,49 +1,45 @@
-
-
-
 class Grid:
-    def __init__(self, x, y, sizeCase, arrayGrid, numberCases):
+    def __init__(self, x, y, sizeCell, arrayGrid, numberCells):
         self.offsetX = x
         self.offsetY = y
-        self.sizeCase = sizeCase
+        self.sizeCell = sizeCell
         self.arrayGrid = arrayGrid
-        self.numberCases = numberCases
+        self.numberCells = numberCells
+        self.creationArrayGrid(arrayGrid)
 
-        self.creationArrayGrid(numberCases, arrayGrid)
-
-        window = Tk()
-        window.title("Blokus")
-        window.attributes('-fullscreen', True)
-
-
-
-    def creationGrid(self, game, numberCases):
-        for i in range(1, numberCases):
-            game.create_line(i * self.sizeCase + self.offsetX,
+    def creationGridTk(self, game):
+        for i in range(1, self.numberCells):
+            game.create_line(i * self.sizeCell + self.offsetX,
                              self.offsetY,
-                             i * self.sizeCase + self.offsetX,
+                             i * self.sizeCell + self.offsetX,
                              800 + self.offsetY
                              )
 
-        for i in range(1, numberCases):
+        for i in range(1, self.numberCells):
             game.create_line(self.offsetX,
-                             self.offsetY + i * self.sizeCase,
+                             self.offsetY + i * self.sizeCell,
                              self.offsetX + 800,
-                             self.offsetY + i * self.sizeCase
+                             self.offsetY + i * self.sizeCell
                              )
 
-    def creationArrayGrid(self, numberCases, arrayGrid):
-        for line in range(numberCases):
+    def updateGridTk(self, game):
+        for i in range(len(self.arrayGrid)):
+            for j in range(len(self.arrayGrid)):
+                if self.arrayGrid[i][j] != 0:
+                    game.create_text(i * self.sizeCell + self.offsetX + self.sizeCell / 2,
+                                     j * self.sizeCell + self.offsetY + self.sizeCell / 2,
+                                     text=self.arrayGrid[i][j])
+
+    def creationArrayGrid(self, arrayGrid):
+        for line in range(self.numberCells):
             nvline = []
-            for col in range(numberCases):
+            for col in range(self.numberCells):
                 nvline.append((0))
             arrayGrid.append(nvline)
         self.arrayGrid = arrayGrid
 
     def arrayGridDisplay(self):
-        for line in self.arrayGrid:
-            print(' '.join(str(e) for e in line))
-
-
-"""jeu = Grid(100, 30, 40, [])
-jeu.arrayGridDisplay()"""
+        for i in range(len(self.arrayGrid)):
+            for line in self.arrayGrid:
+                print(line[i], end=' ')
+            print()

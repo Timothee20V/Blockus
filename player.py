@@ -1,6 +1,3 @@
-from grid import *
-
-
 class Player:
     # initialisation des paramètres
     def __init__(self, color, initial, grid):
@@ -26,7 +23,7 @@ class Player:
                     # change les 1 en RJVB
                 for length in range(0, len(pieceSelectedModel)):
                     for width in range(0, len(pieceSelectedModel[length])):
-                        if (pieceSelectedModel[length][width] == "1"):
+                        if pieceSelectedModel[length][width] == "1":
                             pieceSelectedModel[length][width] = self.initial
                 self.pieces.append(pieceSelectedModel)
                 pieceSelectedModel = []
@@ -72,13 +69,3 @@ class Player:
             pX, pY = piece[i]
             self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial
         print("piece ajouté au coord:", coordX + pX - 2, coordY + pY - 2)
-
-
-jeu = Grid(100, 30, 40, [])
-
-Bleu = Player("Bleu", "B", jeu)
-
-coord = 1,1
-Bleu.putPiece(8, coord)
-print(Bleu.pieceToCoord()[0])
-jeu.arrayGridDisplay()
