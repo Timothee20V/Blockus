@@ -1,15 +1,16 @@
 class Player:
     # initialisation des paramètres
-    def __init__(self, color, initial):
+    def __init__(self, color, initial, grid):
         self.color = color
         self.initial = initial
         self.namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
-                                5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7",
-                                8: "pieces/piece8", 9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11",
-                                12: "pieces/piece12", 13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15",
-                                16: "pieces/piece16", 17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19",
-                                20: "pieces/piece20", 21: "pieces/piece21"}
+                              5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7",
+                              8: "pieces/piece8", 9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11",
+                              12: "pieces/piece12", 13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15",
+                              16: "pieces/piece16", 17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19",
+                              20: "pieces/piece20", 21: "pieces/piece21"}
         self.pieces = []
+        self.grid = grid
 
         # référencement des pièces disponibles
 
@@ -22,7 +23,7 @@ class Player:
                     # change les 1 en RJVB
                 for length in range(0, len(pieceSelectedModel)):
                     for width in range(0, len(pieceSelectedModel[length])):
-                        if (pieceSelectedModel[length][width] == "1"):
+                        if pieceSelectedModel[length][width] == "1":
                             pieceSelectedModel[length][width] = self.initial
                 self.pieces.append(pieceSelectedModel)
                 pieceSelectedModel = []
@@ -46,6 +47,7 @@ class Player:
         return piecesInCoord
 
         # change le sens de la piece
+
     def rotationPieces(self, pieceSelected):
         thePiece = self.pieces[pieceSelected]
 
@@ -60,8 +62,10 @@ class Player:
 
         self.pieces[pieceSelected] = symetricPiece
 
-
-Bleu = Player("Bleu", "B")
-print(Bleu.pieceToCoord()[5])
-Bleu.rotationPieces(5)
-print(Bleu.pieceToCoord()[5])
+    def putPiece(self, num, coord):
+        coordX, coordY = coord
+        piece = self.pieceToCoord()[num]
+        for i in range(len(piece)):
+            pX, pY = piece[i]
+            self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial
+        print("piece ajouté au coord:", coordX + pX - 2, coordY + pY - 2)
