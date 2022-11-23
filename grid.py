@@ -1,44 +1,49 @@
-from tkinter import *
+
 
 
 class Grid:
-    def __init__(self, x, y, sizeCase):
+    def __init__(self, x, y, sizeCase, arrayGrid, numberCases):
         self.offsetX = x
         self.offsetY = y
         self.sizeCase = sizeCase
+        self.arrayGrid = arrayGrid
+        self.numberCases = numberCases
+
+        self.creationArrayGrid(numberCases, arrayGrid)
 
         window = Tk()
         window.title("Blokus")
         window.attributes('-fullscreen', True)
 
-        game = Canvas(window, width=1000, height=860)
 
-        self.creationGrid(game)
 
-        game.grid(row=0, column=0)
-        game.create_rectangle(100, 30, 900, 830)
-
-        informations = Canvas(window, width=528, height=860)
-        informations.grid(row=0, column=1)
-
-        window.bind('<Escape>', lambda e: window.destroy())
-
-        window.mainloop()
-
-    def creationGrid(self, game):
-        for i in range(1, 20):
+    def creationGrid(self, game, numberCases):
+        for i in range(1, numberCases):
             game.create_line(i * self.sizeCase + self.offsetX,
                              self.offsetY,
                              i * self.sizeCase + self.offsetX,
                              800 + self.offsetY
                              )
 
-        for i in range(1, 20):
+        for i in range(1, numberCases):
             game.create_line(self.offsetX,
                              self.offsetY + i * self.sizeCase,
                              self.offsetX + 800,
                              self.offsetY + i * self.sizeCase
                              )
 
+    def creationArrayGrid(self, numberCases, arrayGrid):
+        for line in range(numberCases):
+            nvline = []
+            for col in range(numberCases):
+                nvline.append((0))
+            arrayGrid.append(nvline)
+        self.arrayGrid = arrayGrid
 
-jeu = Grid(100, 30, 40)
+    def arrayGridDisplay(self):
+        for line in self.arrayGrid:
+            print(' '.join(str(e) for e in line))
+
+
+"""jeu = Grid(100, 30, 40, [])
+jeu.arrayGridDisplay()"""
