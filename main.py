@@ -1,7 +1,7 @@
 import grid as g
 import player as p
 from tkinter import *
-import tkinter.ttk as ttk
+import math as math
 
 
 def takeCoord(event):
@@ -29,23 +29,23 @@ def modifPiece(event):
 def available(x, y):
     for cell in player1.pieceToCoord()[piece]:
         cellX, cellY = cell
-        if x + cellX - 2 > jeu.numberCells -1:
-            informations.create_text(400, 525, text='Impossible')
-            return False
-        if y + cellY - 2 > jeu.numberCells - 1:
-            informations.create_text(400, 525, text='Impossible')
-            return False
-        if x + cellX - 2 < 0:
-            informations.create_text(400, 525, text='Impossible')
-            return False
-        if y + cellY - 2 < 0:
-            informations.create_text(400, 525, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0:
+
+        if x + cellX - 2 > jeu.numberCells - 1 or \
+                y + cellY - 2 > jeu.numberCells - 1 or \
+                x + cellX - 2 < 0 or y + cellY - 2 < 0 or \
+                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0:
             informations.create_text(400, 525, text='Impossible')
             return False
 
     return True
+
+
+def pieceFollowing(event):
+    x, y = event.x, event.y
+
+
+
+    game.coords(mapimg, x, y)
 
 
 piece = 12
@@ -66,6 +66,9 @@ game = Canvas(window, width=1000, height=860)
 game.grid(row=0, column=0)
 game.create_rectangle(100, 30, 900, 830)
 
+img = PhotoImage(file='uwu.png')
+mapimg = game.create_image(0, 0, image=img, anchor='nw')
+
 informations = Canvas(window, width=528, height=860)
 informations.grid(row=0, column=1)
 
@@ -76,5 +79,7 @@ game.bind('<Button-1>', takeCoord)
 
 window.bind('<Escape>', lambda e: window.destroy())
 window.bind('<Key>', modifPiece)
+
+game.bind('<Motion>', pieceFollowing)
 
 window.mainloop()
