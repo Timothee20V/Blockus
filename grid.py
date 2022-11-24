@@ -23,12 +23,15 @@ class Grid:
                              )
 
     def updateGridTk(self, game):
+        game.delete('text')
         for i in range(len(self.arrayGrid)):
             for j in range(len(self.arrayGrid)):
                 if self.arrayGrid[i][j] != 0:
                     game.create_text(i * self.sizeCell + self.offsetX + self.sizeCell / 2,
                                      j * self.sizeCell + self.offsetY + self.sizeCell / 2,
-                                     text=self.arrayGrid[i][j])
+                                     text=self.arrayGrid[i][j],
+                                     tags="text"
+                                     )
 
     def creationArrayGrid(self, arrayGrid):
         for line in range(self.numberCells):

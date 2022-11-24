@@ -11,11 +11,11 @@ class Player:
                               20: "pieces/piece20", 21: "pieces/piece21"}
         self.pieces = []
         self.grid = grid
+        self.convertTextFiles()
 
-        # référencement des pièces disponibles
-
+    # Convertion des fichiers textes en une liste de pieces
+    def convertTextFiles(self):
         pieceSelectedModel = []
-        # lecture du fichier choisit et récupération du modèle
         for pieceNum in range(1, 22):
             with open(self.namePieceList[pieceNum], "r") as f:
                 for line in f:
@@ -57,10 +57,11 @@ class Player:
 
     def symmetryPieces(self, pieceSelected):
         thePiece = self.pieces[pieceSelected]
+        theNewPiece = []
 
-        symetricPiece = [[thePiece[j][i] for j in range(len(thePiece))] for i in range(len(thePiece[0]) - 1, -1, -1)]
-
-        self.pieces[pieceSelected] = symetricPiece
+        for i in range(len(thePiece)):
+            theNewPiece.append(thePiece[-i])
+        self.pieces[pieceSelected] = theNewPiece
 
     def putPiece(self, num, coord):
         coordX, coordY = coord
@@ -69,3 +70,4 @@ class Player:
             pX, pY = piece[i]
             self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial
         print("piece ajouté au coord:", coordX + pX - 2, coordY + pY - 2)
+

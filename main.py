@@ -6,19 +6,49 @@ import tkinter.ttk as ttk
 
 def takeCoord(event):
     informations.delete("all")
-    piece = 9
+
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(500, 500, text=x)
     informations.create_text(500, 550, text=y)
-    jeu.arrayGrid[x][y] = "X"
+
+    if available(x, y):
+        player1.putPiece(piece, (x, y))
 
     jeu.updateGridTk(game)
 
-    jeu.arrayGridDisplay()
-    print("")
+
+def modifPiece(event):
+    print(event.keysym)
+    if event.keysym == 'r':
+        player1.rotationPieces(piece)
+    if event.keysym == 's':
+        player1.symmetryPieces(piece)
 
 
+def available(x, y):
+    for cell in player1.pieceToCoord()[piece]:
+        cellX, cellY = cell
+        if x + cellX - 2 > jeu.numberCells -1:
+            informations.create_text(400, 525, text='Impossible')
+            return False
+        if y + cellY - 2 > jeu.numberCells - 1:
+            informations.create_text(400, 525, text='Impossible')
+            return False
+        if x + cellX - 2 < 0:
+            informations.create_text(400, 525, text='Impossible')
+            return False
+        if y + cellY - 2 < 0:
+            informations.create_text(400, 525, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0:
+            informations.create_text(400, 525, text='Impossible')
+            return False
+
+    return True
+
+
+piece = 12
 numberCells = 20
 sizeCells = 40
 
@@ -45,5 +75,6 @@ player1 = p.Player("blue", "B", jeu)
 game.bind('<Button-1>', takeCoord)
 
 window.bind('<Escape>', lambda e: window.destroy())
+window.bind('<Key>', modifPiece)
 
 window.mainloop()
