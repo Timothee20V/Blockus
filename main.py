@@ -35,6 +35,30 @@ def available(x, y):
                 jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0:
             informations.create_text(329, 250, text='Impossible')
             return False
+        if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 0] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 0] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 0] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 0] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 - 1] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 - 1] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 + 1] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
+        if jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 + 1] != 0:
+            informations.create_text(329, 250, text='Impossible')
+            return False
 
     return True
 
