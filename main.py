@@ -1,6 +1,23 @@
 import grid as g
 import player as p
 from tkinter import *
+from PIL import Image, ImageTk
+from functools import partial
+import shutil
+
+
+def count(mainCount):
+    if mainCount == 0:
+        print("1")
+        shutil.rmtree('pieces/blue')
+        shutil.copytree('pieces/Start/blue', 'pieces/blue')
+        shutil.rmtree('pieces/red')
+        shutil.copytree('pieces/Start/red', 'pieces/red')
+        shutil.rmtree('pieces/yellow')
+        shutil.copytree('pieces/Start/yellow', 'pieces/yellow')
+        shutil.rmtree('pieces/green')
+        shutil.copytree('pieces/Start/green', 'pieces/green')
+        return mainCount + 1
 
 
 def takeCoord(event):
@@ -21,6 +38,9 @@ def takeCoord(event):
 def modifPiece(event):
     if event.keysym == 'r':
         player1.rotationPieces(piece)
+        image = Image.open(player1.namePieceListImg[piece])
+        imRotate = image.rotate(-90)
+        imRotate.save(player1.namePieceListImg[piece])
     if event.keysym == 's':
         player1.symmetryPieces(piece)
 
@@ -45,10 +65,19 @@ def available(x, y):
 def pieceFollowing(event):
     x, y = event.x, event.y
 
+    '''img = Image.open(player1.namePieceListImg[piece])
+    img = ImageTk.PhotoImage(img)
+    mapimg = game.create_image(330, 330, image=img, anchor='nw')'''
+
+    fileImg = player1.namePieceListImg[piece]
+    img = PhotoImage(file=fileImg)
+    temp[fileImg] = img
+    img = game.create_image(330, 330, image=img, anchor='nw')
+
     if x > 830 or x < 30 or y > 830 or y < 30:
-        game.coords(mapimg, 330, 330)
+        availablePiecesDisplay()
     else:
-        game.coords(mapimg, x - 50, y - 50)
+        game.coords(img, x - 50, y - 50)
 
 
 def availablePiecesDisplay():
@@ -67,20 +96,21 @@ def availablePiecesDisplay():
                 img = PhotoImage(file=fileImg)
                 temp[fileImg] = img
                 informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
+                btn = Button(informations, image=img, command=partial(selectionPiece, num))
+                btn.place(x=oX + (100 + space) * j, y=oY + (100 + space) * i)
 
 
-def changeColor(player, piece):
-    temp = {}
-    fileImg = player.namePieceListImg[piece]
-    img = PhotoImage(file=fileImg)
-    temp[fileImg] = img
-    for y in range(img.height()):
-        for x in range(img.width()):
-            img.put(player.color, (x, y))
+def selectionPiece(num):
+    global piece
+    piece = num
+    informations.create_text(329, 200, text=num)
+    availablePiecesDisplay()
 
 
+mainCount = 0
+mainCount = count(mainCount)
 
-piece = 13
+piece = 1
 numberCells = 20
 sizeCells = 40
 
@@ -105,14 +135,9 @@ informations = Canvas(window, width=658, height=860)
 informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
-player1 = p.Player("red", "B", jeu)
-
-img = PhotoImage(file=player1.namePieceListImg[piece])
-mapimg = game.create_image(330, 330, image=img, anchor='nw')
+player1 = p.Player("blue", "B", jeu)
 
 availablePiecesDisplay()
-
-changeColor(player1, 1)
 
 game.bind('<Button-1>', takeCoord)
 
