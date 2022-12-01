@@ -4,22 +4,34 @@ class Player:
         self.color = color
         self.initial = initial
         self.namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
-                              5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7",
-                              8: "pieces/piece8", 9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11",
-                              12: "pieces/piece12", 13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15",
-                              16: "pieces/piece16", 17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19",
-                              20: "pieces/piece20", 21: "pieces/piece21"}
-        self.namePieceListImg = {1: "images100px/piece1.png", 2: "images100px/piece2.png",
-                                 3: "images100px/piece3.png", 4: "images100px/piece4.png",
-                                 5: "images100px/piece5.png", 6: "images100px/piece6.png",
-                                 7: "images100px/piece7.png",
-                                 8: "images100px/piece8.png", 9: "images100px/piece9.png",
-                                 10: "images100px/piece10.png", 11: "images100px/piece11.png",
-                                 12: "images100px/piece12.png", 13: "images100px/piece13.png",
-                                 14: "images100px/piece14.png", 15: "images100px/piece15.png",
-                                 16: "images100px/piece16.png", 17: "images100px/piece17.png",
-                                 18: "images100px/piece18.png", 19: "images100px/piece19.png",
-                                 20: "images100px/piece20.png", 21: "images100px/piece21.png"}
+                              5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
+                              9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
+                              13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
+                              17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
+                              21: "pieces/piece21"
+                              }
+        self.namePieceListImg = {1: "pieces/{}/piece1.png".format(self.color),
+                                 2: "pieces/{}/piece2.png".format(self.color),
+                                 3: "pieces/{}/piece3.png".format(self.color),
+                                 4: "pieces/{}/piece4.png".format(self.color),
+                                 5: "pieces/{}/piece5.png".format(self.color),
+                                 6: "pieces/{}/piece6.png".format(self.color),
+                                 7: "pieces/{}/piece7.png".format(self.color),
+                                 8: "pieces/{}/piece8.png".format(self.color),
+                                 9: "pieces/{}/piece9.png".format(self.color),
+                                 10: "pieces/{}/piece10.png".format(self.color),
+                                 11: "pieces/{}/piece11.png".format(self.color),
+                                 12: "pieces/{}/piece12.png".format(self.color),
+                                 13: "pieces/{}/piece13.png".format(self.color),
+                                 14: "pieces/{}/piece14.png".format(self.color),
+                                 15: "pieces/{}/piece15.png".format(self.color),
+                                 16: "pieces/{}/piece16.png".format(self.color),
+                                 17: "pieces/{}/piece17.png".format(self.color),
+                                 18: "pieces/{}/piece18.png".format(self.color),
+                                 19: "pieces/{}/piece19.png".format(self.color),
+                                 20: "pieces/{}/piece20.png".format(self.color),
+                                 21: "pieces/{}/piece21.png".format(self.color)
+                                 }
 
         self.pieces = []
         self.grid = grid
@@ -63,24 +75,33 @@ class Player:
         return piecesInCoord
 
     def rotationPieces(self, pieceSelected):
-        thePiece = self.pieces[pieceSelected]
+        thePiece = self.pieces[pieceSelected - 1]
 
         returnedPiece = [[thePiece[j][i] for j in range(len(thePiece))] for i in range(len(thePiece[0]) - 1, -1, -1)]
 
-        self.pieces[pieceSelected] = returnedPiece
+        print("rotation:")
+        print(self.pieceToCoord()[pieceSelected - 1])
+        self.pieces[pieceSelected - 1] = returnedPiece
+        print(self.pieceToCoord()[pieceSelected - 1])
 
     def symmetryPieces(self, pieceSelected):
-        thePiece = self.pieces[pieceSelected]
+        thePiece = self.pieces[pieceSelected - 1]
         theNewPiece = []
 
         for i in range(len(thePiece)):
             theNewPiece.append(thePiece[-i])
-        self.pieces[pieceSelected] = theNewPiece
+
+        print('symétrie:')
+        print(self.pieceToCoord()[pieceSelected - 1])
+        self.pieces[pieceSelected - 1] = theNewPiece
+        print(self.pieceToCoord()[pieceSelected - 1])
 
     def putPiece(self, num, coord):
         coordX, coordY = coord
         self.usedPieces.append(num)
         piece = self.pieceToCoord()[num]
+        print("piece placé:")
+        print(piece)
         for i in range(len(piece)):
             pX, pY = piece[i]
             self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial

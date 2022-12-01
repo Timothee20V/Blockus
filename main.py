@@ -36,6 +36,9 @@ def available(x, y):
             informations.create_text(329, 250, text='Impossible')
             return False
 
+        if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 1] != 0:
+            return False
+
     return True
 
 
@@ -45,7 +48,7 @@ def pieceFollowing(event):
     if x > 830 or x < 30 or y > 830 or y < 30:
         game.coords(mapimg, 330, 330)
     else:
-        game.coords(mapimg, x - 100, y - 100)
+        game.coords(mapimg, x - 50, y - 50)
 
 
 def availablePiecesDisplay():
@@ -66,10 +69,18 @@ def availablePiecesDisplay():
                 informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
 
 
+def changeColor(player, piece):
+    temp = {}
+    fileImg = player.namePieceListImg[piece]
+    img = PhotoImage(file=fileImg)
+    temp[fileImg] = img
+    for y in range(img.height()):
+        for x in range(img.width()):
+            img.put(player.color, (x, y))
 
 
 
-piece = 21
+piece = 13
 numberCells = 20
 sizeCells = 40
 
@@ -90,16 +101,18 @@ game.grid(row=0, column=0)
 game.create_rectangle(offsetX, offsetY, 830, 830)
 game.create_line(871, 0, 871, 860, width=2)
 
-img = PhotoImage(file='images200px/piece21.png')
-mapimg = game.create_image(330, 330, image=img, anchor='nw')
-
 informations = Canvas(window, width=658, height=860)
 informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
-player1 = p.Player("blue", "B", jeu)
+player1 = p.Player("red", "B", jeu)
+
+img = PhotoImage(file=player1.namePieceListImg[piece])
+mapimg = game.create_image(330, 330, image=img, anchor='nw')
 
 availablePiecesDisplay()
+
+changeColor(player1, 1)
 
 game.bind('<Button-1>', takeCoord)
 
