@@ -138,6 +138,7 @@ informations = Canvas(window, width=658, height=860)
 informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
+
 player1 = p.Player("blue", "B", jeu)
 player2 = p.Player("red", "R", jeu)
 player3 = p.Player("yellow", "Y", jeu)
