@@ -3,6 +3,7 @@ class Player:
     def __init__(self, color, initial, grid):
         self.color = color
         self.initial = initial
+        self.surrend = False
         self.namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
                               5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7",
                               8: "pieces/piece8", 9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11",
