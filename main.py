@@ -4,30 +4,40 @@ from tkinter import *
 
 
 def takeCoord(event):
+    
+
     informations.delete("all")
 
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
-
+    
     if available(x, y):
-        player1.putPiece(piece - 1, (x, y))
-
+        playerP.putPiece(piece - 1, (x, y))
+    
+    
     jeu.updateGridTk(game)
     availablePiecesDisplay()
 
 
+
 def modifPiece(event):
     if event.keysym == 'r':
-        player1.rotationPieces(piece)
+        playerP.rotationPieces(piece)
     if event.keysym == 's':
-        player1.symmetryPieces(piece)
+        playerP.symmetryPieces(piece)
+
+
+
 
 
 def available(x, y):
-    for cell in player1.pieceToCoord()[piece - 1]:
+    
+    for cell in playerP.pieceToCoord()[piece - 1]:
         cellX, cellY = cell
+       
+        
 
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
@@ -63,6 +73,7 @@ def available(x, y):
     return True
 
 
+
 def pieceFollowing(event):
     x, y = event.x, event.y
 
@@ -84,7 +95,7 @@ def availablePiecesDisplay():
                     num = i * 5 + j + 1
                 else:
                     num = 21
-                fileImg = player1.namePieceListImg[num]
+                fileImg = playerP.namePieceListImg[num]
                 img = PhotoImage(file=fileImg)
                 temp[fileImg] = img
                 informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
@@ -93,12 +104,16 @@ def availablePiecesDisplay():
 
 
 
+
 piece = 21
 numberCells = 20
 sizeCells = 40
-
+turn = 0
 offsetX = 30
 offsetY = 30
+
+global count 
+count = 0
 
 temp = {}
 
@@ -122,6 +137,10 @@ informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
 player1 = p.Player("blue", "B", jeu)
+player2 = p.Player("red", "R", jeu)
+player3 = p.Player("yellow", "Y", jeu)
+player4 = p.Player("green", "G", jeu)
+playerP = player1
 
 availablePiecesDisplay()
 
@@ -131,5 +150,6 @@ window.bind('<Escape>', lambda e: window.destroy())
 window.bind('<Key>', modifPiece)
 
 game.bind('<Motion>', pieceFollowing)
+
 
 window.mainloop()
