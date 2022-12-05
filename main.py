@@ -10,13 +10,21 @@ def count(mainCount):
     if mainCount == 0:
         print("1")
         shutil.rmtree('pieces/blue')
+        shutil.rmtree('pieces/piecesX2/pieces/blue')
         shutil.copytree('pieces/Start/blue', 'pieces/blue')
+        shutil.copytree('pieces/Start/pieces/blue', 'pieces/piecesX2/pieces/blue')
         shutil.rmtree('pieces/red')
+        shutil.rmtree('pieces/piecesX2/pieces/red')
         shutil.copytree('pieces/Start/red', 'pieces/red')
+        shutil.copytree('pieces/Start/pieces/red', 'pieces/piecesX2/pieces/red')
         shutil.rmtree('pieces/yellow')
+        shutil.rmtree('pieces/piecesX2/pieces/yellow')
         shutil.copytree('pieces/Start/yellow', 'pieces/yellow')
+        shutil.copytree('pieces/Start/pieces/yellow', 'pieces/piecesX2/pieces/yellow')
         shutil.rmtree('pieces/green')
+        shutil.rmtree('pieces/piecesX2/pieces/green')
         shutil.copytree('pieces/Start/green', 'pieces/green')
+        shutil.copytree('pieces/Start/pieces/green', 'pieces/piecesX2/pieces/green')
         return mainCount + 1
 
 
@@ -41,8 +49,17 @@ def modifPiece(event):
         image = Image.open(player1.namePieceListImg[piece])
         imRotate = image.rotate(-90)
         imRotate.save(player1.namePieceListImg[piece])
+        image = Image.open("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
+        imRotate = image.rotate(-90)
+        imRotate.save("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
     if event.keysym == 's':
         player1.symmetryPieces(piece)
+        image = Image.open(player1.namePieceListImg[piece])
+        imFlip = image.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
+        imFlip.save(player1.namePieceListImg[piece])
+        image = Image.open("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
+        imFlip = image.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
+        imFlip.save("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
 
 
 def available(x, y):
@@ -65,19 +82,16 @@ def available(x, y):
 def pieceFollowing(event):
     x, y = event.x, event.y
 
-    '''img = Image.open(player1.namePieceListImg[piece])
-    img = ImageTk.PhotoImage(img)
-    mapimg = game.create_image(330, 330, image=img, anchor='nw')'''
-
-    fileImg = player1.namePieceListImg[piece]
+    fileImg = "pieces/piecesX2/{}".format(player1.namePieceListImg[piece])
     img = PhotoImage(file=fileImg)
     temp[fileImg] = img
-    img = game.create_image(330, 330, image=img, anchor='nw')
+    img = game.create_image(-330, -330, image=img, anchor='nw')
 
     if x > 830 or x < 30 or y > 830 or y < 30:
         availablePiecesDisplay()
     else:
-        game.coords(img, x - 50, y - 50)
+        jeu.updateGridTk(game)
+        game.coords(img, x - 100, y - 100)
 
 
 def availablePiecesDisplay():
@@ -136,7 +150,6 @@ informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
 player1 = p.Player("blue", "B", jeu)
-
 availablePiecesDisplay()
 
 game.bind('<Button-1>', takeCoord)

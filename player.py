@@ -89,7 +89,7 @@ class Player:
         theNewPiece = []
 
         for i in range(len(thePiece)):
-            theNewPiece.append(thePiece[-i])
+            theNewPiece.append(thePiece[len(thePiece) - i - 1])
 
         print('symétrie:')
         print(self.pieceToCoord()[pieceSelected - 1])
