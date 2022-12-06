@@ -180,7 +180,7 @@ turn = 0
 offsetX = 30
 offsetY = 30
 
-global count 
+
 count = 0
 
 temp = {}
