@@ -37,6 +37,7 @@ class Player:
         self.grid = grid
         self.convertTextFiles()
         self.usedPieces = []
+        self.surrend = False
 
     # Convertion des fichiers textes en une liste de pieces
     def convertTextFiles(self):
