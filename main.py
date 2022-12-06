@@ -29,7 +29,6 @@ def count(mainCount):
 
 
 def takeCoord(event):
-
     global player
     global counter
     informations.delete("all")
@@ -39,28 +38,24 @@ def takeCoord(event):
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
 
-    ##if available(x, y):
-    ##    player1.putPiece(piece - 1, (x, y))
-
-    if(counter == 0 and player1.surrend != True):
+    if counter == 0 and player1.surrend != True:
         player = player1
         counter += 1
-    elif(counter == 1 and player2.surrend != True):
+    elif counter == 1 and player2.surrend != True:
         player = player2
-        counter +=1
-    elif(counter == 2 and player3.surrend != True):
+        counter += 1
+    elif counter == 2 and player3.surrend != True:
         player = player3
-        counter +=1
-    elif(counter == 3 and player4.surrend != True):
+        counter += 1
+    elif counter == 3 and player4.surrend != True:
         player = player4
         counter = 0
-        
+
     if available(x, y):
         player.putPiece(piece - 1, (x, y))
 
     jeu.updateGridTk(game)
     availablePiecesDisplay()
-
 
 
 def modifPiece(event):
@@ -81,12 +76,10 @@ def modifPiece(event):
         imFlip = image.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
         imFlip.save("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
 
+
 def available(x, y):
-    
     for cell in player.pieceToCoord()[piece - 1]:
         cellX, cellY = cell
-       
-        
 
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
@@ -119,11 +112,7 @@ def available(x, y):
             informations.create_text(329, 250, text='Impossible')
             return False
 
-        if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 1] != 0:
-            return False
-
     return True
-
 
 
 def pieceFollowing(event):
@@ -180,7 +169,6 @@ turn = 0
 offsetX = 30
 offsetY = 30
 
-
 count = 0
 
 temp = {}
@@ -209,7 +197,6 @@ player4 = p.Player("green", "G", jeu)
 player = player1
 counter = 0
 
-
 availablePiecesDisplay()
 
 game.bind('<Button-1>', takeCoord)
@@ -218,6 +205,5 @@ window.bind('<Escape>', lambda e: window.destroy())
 window.bind('<Key>', modifPiece)
 
 game.bind('<Motion>', pieceFollowing)
-
 
 window.mainloop()
