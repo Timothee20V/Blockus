@@ -37,9 +37,9 @@ def takeCoord(event):
 
 def modifPiece(event):
     if event.keysym == 'r':
-        player1.rotationPieces(piece)
+        player.rotationPieces(piece)
     if event.keysym == 's':
-        player1.symmetryPieces(piece)
+        player.symmetryPieces(piece)
 
 
 def available(x, y):
@@ -101,7 +101,7 @@ def availablePiecesDisplay():
                     num = i * 5 + j + 1
                 else:
                     num = 21
-                fileImg = player1.namePieceListImg[num]
+                fileImg = player.namePieceListImg[num]
                 img = PhotoImage(file=fileImg)
                 temp[fileImg] = img
                 informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
