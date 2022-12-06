@@ -47,7 +47,7 @@ def modifPiece(event):
 
 def available(x, y):
     
-    for cell in playerP.pieceToCoord()[piece - 1]:
+    for cell in player.pieceToCoord()[piece - 1]:
         cellX, cellY = cell
        
         
