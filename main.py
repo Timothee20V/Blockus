@@ -38,7 +38,7 @@ def takeCoord(event):
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
 <<<<<<< Updated upstream
-
+        
     if counter == 0 and player1.surrend != True:
         player = player1
         counter += 1
