@@ -37,6 +37,7 @@ def takeCoord(event):
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
+<<<<<<< Updated upstream
 
     if counter == 0 and player1.surrend != True:
         player = player1
@@ -51,8 +52,23 @@ def takeCoord(event):
         player = player4
         counter = 0
 
+=======
+        
+>>>>>>> Stashed changes
     if available(x, y):
         player.putPiece(piece - 1, (x, y))
+        if(counter == 0 and player1.surrend != True):
+            player = player1
+            counter += 1
+        elif(counter == 1 and player2.surrend != True):
+            player = player2
+            counter +=1
+        elif(counter == 2 and player3.surrend != True):
+            player = player3
+            counter +=1
+        elif(counter == 3 and player4.surrend != True):
+            player = player4
+            counter = 0
 
     jeu.updateGridTk(game)
     availablePiecesDisplay()
@@ -195,7 +211,7 @@ player2 = p.Player("red", "R", jeu)
 player3 = p.Player("yellow", "Y", jeu)
 player4 = p.Player("green", "G", jeu)
 player = player1
-counter = 0
+counter = 1
 
 availablePiecesDisplay()
 
