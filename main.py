@@ -4,6 +4,7 @@ from tkinter import *
 
 
 def takeCoord(event):
+
     global player
     global counter
     informations.delete("all")
@@ -28,23 +29,28 @@ def takeCoord(event):
     elif(counter == 3 and player4.surrend != True):
         player = player4
         counter = 0
-
-    player.putPiece(piece - 1, (x, y))
+        
+    if available(x, y):
+        player.putPiece(piece - 1, (x, y))
 
     jeu.updateGridTk(game)
     availablePiecesDisplay()
 
 
+
 def modifPiece(event):
     if event.keysym == 'r':
+
         player.rotationPieces(piece)
     if event.keysym == 's':
         player.symmetryPieces(piece)
 
-
 def available(x, y):
-    for cell in player1.pieceToCoord()[piece - 1]:
+    
+    for cell in playerP.pieceToCoord()[piece - 1]:
         cellX, cellY = cell
+       
+        
 
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
@@ -80,6 +86,7 @@ def available(x, y):
     return True
 
 
+
 def pieceFollowing(event):
     x, y = event.x, event.y
 
@@ -101,7 +108,9 @@ def availablePiecesDisplay():
                     num = i * 5 + j + 1
                 else:
                     num = 21
+
                 fileImg = player.namePieceListImg[num]
+
                 img = PhotoImage(file=fileImg)
                 temp[fileImg] = img
                 informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
@@ -110,12 +119,16 @@ def availablePiecesDisplay():
 
 
 
+
 piece = 21
 numberCells = 20
 sizeCells = 40
-
+turn = 0
 offsetX = 30
 offsetY = 30
+
+global count 
+count = 0
 
 temp = {}
 
@@ -146,6 +159,7 @@ player4 = p.Player("green", "G", jeu)
 player = player1
 counter = 0
 
+
 availablePiecesDisplay()
 
 game.bind('<Button-1>', takeCoord)
@@ -154,5 +168,6 @@ window.bind('<Escape>', lambda e: window.destroy())
 window.bind('<Key>', modifPiece)
 
 game.bind('<Motion>', pieceFollowing)
+
 
 window.mainloop()
