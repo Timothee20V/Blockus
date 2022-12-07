@@ -31,31 +31,18 @@ def count(mainCount):
 def takeCoord(event):
     global player
     global counter
+    global roundGame
     informations.delete("all")
 
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
-<<<<<<< Updated upstream
         
-    if counter == 0 and player1.surrend != True:
-        player = player1
-        counter += 1
-    elif counter == 1 and player2.surrend != True:
-        player = player2
-        counter += 1
-    elif counter == 2 and player3.surrend != True:
-        player = player3
-        counter += 1
-    elif counter == 3 and player4.surrend != True:
-        player = player4
-        counter = 0
-
-=======
-        
->>>>>>> Stashed changes
     if available(x, y):
+        if(roundGame==0):
+            #faire la règle pour le premier tour
+            roundGame = roundGame #a supprimer après
         player.putPiece(piece - 1, (x, y))
         if(counter == 0 and player1.surrend != True):
             player = player1
@@ -69,6 +56,7 @@ def takeCoord(event):
         elif(counter == 3 and player4.surrend != True):
             player = player4
             counter = 0
+            roundGame += 1
 
     jeu.updateGridTk(game)
     availablePiecesDisplay()
@@ -212,6 +200,7 @@ player3 = p.Player("yellow", "Y", jeu)
 player4 = p.Player("green", "G", jeu)
 player = player1
 counter = 1
+roundGame =0
 
 availablePiecesDisplay()
 
