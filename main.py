@@ -8,7 +8,6 @@ import shutil
 
 def count(mainCount):
     if mainCount == 0:
-        print("1")
         shutil.rmtree('pieces/blue')
         shutil.rmtree('pieces/piecesX2/pieces/blue')
         shutil.copytree('pieces/Start/blue', 'pieces/blue')
@@ -31,42 +30,26 @@ def count(mainCount):
 def takeCoord(event):
     global player
     global counter
-    informations.delete("all")
 
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
-<<<<<<< Updated upstream
-        
-    if counter == 0 and player1.surrend != True:
-        player = player1
-        counter += 1
-    elif counter == 1 and player2.surrend != True:
-        player = player2
-        counter += 1
-    elif counter == 2 and player3.surrend != True:
-        player = player3
-        counter += 1
-    elif counter == 3 and player4.surrend != True:
-        player = player4
-        counter = 0
 
-=======
-        
->>>>>>> Stashed changes
     if available(x, y):
+        print("N°", piece)
         player.putPiece(piece - 1, (x, y))
-        if(counter == 0 and player1.surrend != True):
+        player.removePiece(piece)
+        if counter == 0 and player1.surrend != True:
             player = player1
             counter += 1
-        elif(counter == 1 and player2.surrend != True):
+        elif counter == 1 and player2.surrend != True:
             player = player2
-            counter +=1
-        elif(counter == 2 and player3.surrend != True):
+            counter += 1
+        elif counter == 2 and player3.surrend != True:
             player = player3
-            counter +=1
-        elif(counter == 3 and player4.surrend != True):
+            counter += 1
+        elif counter == 3 and player4.surrend != True:
             player = player4
             counter = 0
 
@@ -76,21 +59,21 @@ def takeCoord(event):
 
 def modifPiece(event):
     if event.keysym == 'r':
-        player1.rotationPieces(piece)
-        image = Image.open(player1.namePieceListImg[piece])
+        player.rotationPieces(piece)
+        image = Image.open(player.namePieceListImg[piece])
         imRotate = image.rotate(-90)
-        imRotate.save(player1.namePieceListImg[piece])
-        image = Image.open("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
+        imRotate.save(player.namePieceListImg[piece])
+        image = Image.open("pieces/piecesX2/{}".format(player.namePieceListImg[piece]))
         imRotate = image.rotate(-90)
-        imRotate.save("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
+        imRotate.save("pieces/piecesX2/{}".format(player.namePieceListImg[piece]))
     if event.keysym == 's':
-        player1.symmetryPieces(piece)
-        image = Image.open(player1.namePieceListImg[piece])
+        player.symmetryPieces(piece)
+        image = Image.open(player.namePieceListImg[piece])
         imFlip = image.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
-        imFlip.save(player1.namePieceListImg[piece])
-        image = Image.open("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
+        imFlip.save(player.namePieceListImg[piece])
+        image = Image.open("pieces/piecesX2/{}".format(player.namePieceListImg[piece]))
         imFlip = image.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
-        imFlip.save("pieces/piecesX2/{}".format(player1.namePieceListImg[piece]))
+        imFlip.save("pieces/piecesX2/{}".format(player.namePieceListImg[piece]))
 
 
 def available(x, y):
@@ -100,56 +83,55 @@ def available(x, y):
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
                 x + cellX - 2 < 0 or y + cellY - 2 < 0 or \
-                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0:
+                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0 or \
+                piece not in player.namePieceList:
             informations.create_text(329, 250, text='Impossible')
             return False
-        if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 0] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 0] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 0] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 0] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 - 1] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 - 1] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 + 1] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
-        if jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 + 1] != 0:
-            informations.create_text(329, 250, text='Impossible')
-            return False
+        try:
+            if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 0] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 0] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 0] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 0] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 - 1] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 - 1] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 + 1] != 0 or \
+                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 + 1] != 0:
+                informations.create_text(329, 250, text='Impossible')
+                return False
+        except IndexError:
+            print("Bordure")
 
     return True
 
 
 def pieceFollowing(event):
     x, y = event.x, event.y
+    global piece
 
-    fileImg = "pieces/piecesX2/{}".format(player1.namePieceListImg[piece])
-    img = PhotoImage(file=fileImg)
-    temp[fileImg] = img
-    img = game.create_image(-330, -330, image=img, anchor='nw')
+    try:
+        fileImg = "pieces/piecesX2/{}".format(player.namePieceListImg[piece])
+        img = PhotoImage(file=fileImg)
+        temp[fileImg] = img
+        img = game.create_image(-330, -330, image=img, anchor='nw')
 
-    if x > 830 or x < 30 or y > 830 or y < 30:
-        availablePiecesDisplay()
-    else:
-        jeu.updateGridTk(game)
-        game.coords(img, x - 100, y - 100)
+        if x > 830 or x < 30 or y > 830 or y < 30:
+            '''availablePiecesDisplay()'''
+        else:
+            jeu.updateGridTk(game)
+            x = int((event.x - jeu.offsetX) / sizeCells)
+            y = int((event.y - jeu.offsetY) / sizeCells)
+            game.coords(img, x * 40 - 50, y * 40 - 50)
+    except:
+        print("Pas de piece à afficher")
 
 
 def availablePiecesDisplay():
     oX = 60
     oY = 300
     space = 10
+
+    informations = Canvas(window, width=658, height=860)
+    informations.grid(row=0, column=1)
 
     for i in range(5):
         for j in range(5):
@@ -159,13 +141,15 @@ def availablePiecesDisplay():
                 else:
                     num = 21
 
-                fileImg = player.namePieceListImg[num]
-
-                img = PhotoImage(file=fileImg)
-                temp[fileImg] = img
-                informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
-                btn = Button(informations, image=img, command=partial(selectionPiece, num))
-                btn.place(x=oX + (100 + space) * j, y=oY + (100 + space) * i)
+                if num in player.namePieceList:
+                    fileImg = player.namePieceListImg[num]
+                    img = PhotoImage(file=fileImg)
+                    temp[fileImg] = img
+                    informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
+                    btn = Button(informations, image=img, command=partial(selectionPiece, num))
+                    btn.place(x=oX + (100 + space) * j, y=oY + (100 + space) * i)
+                else:
+                    print("ok")
 
 
 def selectionPiece(num):
@@ -178,7 +162,7 @@ def selectionPiece(num):
 mainCount = 0
 mainCount = count(mainCount)
 
-piece = 21
+piece = 1
 numberCells = 20
 sizeCells = 40
 turn = 0
