@@ -165,15 +165,37 @@ def selectionPiece(num):
     informations.create_text(329, 200, text=num)
     availablePiecesDisplay()
 
+
 def endGame():
+    playerBaseColor = [player1.color,player2.color,player3.color,player4.color]
+    playerBaseNameList =["player1.namePieceList","player2.namePieceList","player3.namePieceList","player4.namePieceList"]
+    i=0
 
     saveGameBoard(jeu.arrayGrid)
     saveDataTour(str(roundGame),str(counterGame))
-    saveGamePieces(player1.namePieceList,player1.color)
-    saveGamePieces(player2.namePieceList,player2.color)
-    saveGamePieces(player3.namePieceList,player3.color)
-    saveGamePieces(player4.namePieceList,player4.color)
+    for playerColor in playerBaseColor:
+        saveGamePieces(playerBaseNameList[i],playerColor)
+        i+=1
     window.destroy()
+
+
+def reset():
+    plateauSave = [[0 for i in range(20)]for j in range(20)]
+    saveGameBoard(plateauSave)
+
+    playerBase = [player1.color,player2.color,player3.color,player4.color]
+    namePieceListBase = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
+                    5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
+                    9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
+                    13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
+                    17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
+                    21: "pieces/piece21"
+                    }
+    for playerName in playerBase :
+        saveGamePieces(namePieceListBase,playerName)
+
+
+
 
 mainCount = 0
 mainCount = count(mainCount)
@@ -189,7 +211,7 @@ count = 0
 
 temp = {}
 
-jeu = g.Grid(offsetX, offsetY, sizeCells, [], numberCells)
+jeu = g.Grid(offsetX, offsetY, sizeCells, loadGameBoard(), numberCells)
 
 window = Tk()
 window.title("Blokus")
