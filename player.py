@@ -110,3 +110,4 @@ class Player:
         for i in range(len(piece)):
             pX, pY = piece[i]
             self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial
+        
