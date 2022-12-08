@@ -1,6 +1,6 @@
 import grid as g
 import player as p
-from save_load import globalSave,loadDataCounter,loadDataRound,loadGameBoard,loadGamePiece
+from save_load import *
 from tkinter import *
 from PIL import Image, ImageTk
 from functools import partial
@@ -30,7 +30,7 @@ def count(mainCount):
 
 def takeCoord(event):
     global player
-    global counter
+    global counterGame
     global roundGame
 
 
@@ -46,18 +46,18 @@ def takeCoord(event):
 
         player.putPiece(piece - 1, (x, y))
         player.removePiece(piece)
-        if counter == 0 and player1.surrend != True:
+        if counterGame == 0 and player1.surrend != True:
             player = player1
-            counter += 1
-        elif counter == 1 and player2.surrend != True:
+            counterGame += 1
+        elif counterGame == 1 and player2.surrend != True:
             player = player2
-            counter += 1
-        elif counter == 2 and player3.surrend != True:
+            counterGame += 1
+        elif counterGame == 2 and player3.surrend != True:
             player = player3
-            counter += 1
-        elif counter == 3 and player4.surrend != True:
+            counterGame += 1
+        elif counterGame == 3 and player4.surrend != True:
             player = player4
-            counter = 0
+            counterGame = 0
             roundGame += 1
 
     jeu.updateGridTk(game)
@@ -165,6 +165,15 @@ def selectionPiece(num):
     informations.create_text(329, 200, text=num)
     availablePiecesDisplay()
 
+def endGame():
+
+    saveGameBoard(jeu.arrayGrid)
+    saveDataTour(str(roundGame),str(counterGame))
+    saveGamePieces(player1.namePieceList,player1.color)
+    saveGamePieces(player2.namePieceList,player2.color)
+    saveGamePieces(player3.namePieceList,player3.color)
+    saveGamePieces(player4.namePieceList,player4.color)
+    window.destroy()
 
 mainCount = 0
 mainCount = count(mainCount)
@@ -197,7 +206,7 @@ informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
 
-colorSwitch = ["Blue","Red","Yellow","Green"]
+colorSwitch= ["blue","red","yellow","green"]
 
 for color in colorSwitch:
 
@@ -205,24 +214,24 @@ for color in colorSwitch:
     if(listPiece=={}):
         listPiece="None"
 
-    if(color =="Blue"):
+    if(color =="blue"):
         player1 = p.Player("blue", "B", jeu,listPiece)
-    elif(color=="Red"):
+    elif(color=="red"):
         player2 = p.Player("red", "R", jeu,listPiece)
-    elif(color=="Yellow"):
+    elif(color=="yellow"):
         player3 = p.Player("yellow", "Y", jeu,listPiece)
-    elif(color=="Green"):
+    elif(color=="green"):
         player4 = p.Player("green", "G", jeu,listPiece)
 
 player = player1
-counter = loadDataCounter()
+counterGame = loadDataCounter()
 roundGame =loadDataRound()
 
 availablePiecesDisplay()
 
 game.bind('<Button-1>', takeCoord)
 
-window.bind('<Escape>', lambda e: window.destroy())
+window.bind('<Escape>', lambda e: endGame())
 window.bind('<Key>', modifPiece)
 
 game.bind('<Motion>', pieceFollowing)
