@@ -1,4 +1,7 @@
+import os
+
 def saveGameBoard(plateau):
+    os.remove("save/save_plateau.txt")
     with open("save/save_plateau.txt", "w") as file:
         for ligne in range(len(plateau)):
             for colonne in plateau[ligne]:
@@ -16,16 +19,16 @@ def saveGamePieces(grillePiece,color):
     elif(color=="yellow"):
         fileName = "save/save_piecesY.txt"
 
+    os.remove(fileName)
     with open(fileName, "w") as file:
-        for i in range(len(grillePiece)):
-            file.write(str(i+1)+" "+grillePiece.get(i+1))
+        for key,value in grillePiece.items():
+            file.write(str(key)+" "+value)
             file.write("\n")
 
-def saveDataTour(round,counter):
+def saveDataTour(counter):
+    os.remove("save/save_otherData.txt")
     with open("save/save_otherData.txt", "w") as file:
-        file.write(round)
-        file.write("\n")
-        file.write(counter)
+        file.write(str(counter))
 
 
 def loadGameBoard():
@@ -52,16 +55,8 @@ def loadGamePiece(color):
             returnpiece.update({int(line.split(" ")[0]):line.split(" ")[1].strip()})
     return returnpiece
 
-def loadDataRound():
-    returnData=[]
-    with open("save/save_otherData.txt", "r") as file:
-     for line in file:
-        returnData.append(int(line.strip()))
-    return returnData[0]
-
 def loadDataCounter():
     returnData=[]
     with open("save/save_otherData.txt", "r") as file:
      for line in file:
-        returnData.append(int(line.strip()))
-    return returnData[1]
+        return int(line)

@@ -46,8 +46,8 @@ class Player:
     def convertTextFiles(self):
         pieceSelectedModel = []
 
-        for pieceNum in range(1, 22):
-            with open(self.namePieceList[pieceNum], "r") as f:
+        for key,pieceNum in self.namePieceList.items():
+            with open(pieceNum, "r") as f:
 
                 for line in f:
                     pieceSelectedModel.append(line.strip().split(' '))

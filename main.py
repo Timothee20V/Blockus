@@ -7,6 +7,7 @@ from functools import partial
 import shutil
 
 
+
 def count(mainCount):
     if mainCount == 0:
         shutil.rmtree('pieces/blue')
@@ -31,7 +32,6 @@ def count(mainCount):
 def takeCoord(event):
     global player
     global counterGame
-    global roundGame
 
 
     x = int((event.x - jeu.offsetX) / sizeCells)
@@ -40,10 +40,6 @@ def takeCoord(event):
     informations.create_text(329, 240, text=y)
 
     if available(x, y):
-        if(roundGame==0):
-            #faire la règle pour le premier tour
-            roundGame = roundGame #a supprimer après
-
         player.putPiece(piece - 1, (x, y))
         player.removePiece(piece)
         if counterGame == 0 and player1.surrend != True:
@@ -58,7 +54,7 @@ def takeCoord(event):
         elif counterGame == 3 and player4.surrend != True:
             player = player4
             counterGame = 0
-            roundGame += 1
+
 
     jeu.updateGridTk(game)
     availablePiecesDisplay()
@@ -129,7 +125,7 @@ def pieceFollowing(event):
             y = int((event.y - jeu.offsetY) / sizeCells)
             game.coords(img, x * 40 - 50, y * 40 - 50)
     except:
-        print("Pas de piece à afficher")
+        x=1
 
 
 def availablePiecesDisplay():
@@ -168,11 +164,11 @@ def selectionPiece(num):
 
 def endGame():
     playerBaseColor = [player1.color,player2.color,player3.color,player4.color]
-    playerBaseNameList =["player1.namePieceList","player2.namePieceList","player3.namePieceList","player4.namePieceList"]
+    playerBaseNameList =[player1.namePieceList,player2.namePieceList,player3.namePieceList,player4.namePieceList]
     i=0
 
     saveGameBoard(jeu.arrayGrid)
-    saveDataTour(str(roundGame),str(counterGame))
+    saveDataTour(counterGame)
     for playerColor in playerBaseColor:
         saveGamePieces(playerBaseNameList[i],playerColor)
         i+=1
@@ -247,7 +243,6 @@ for color in colorSwitch:
 
 player = player1
 counterGame = loadDataCounter()
-roundGame =loadDataRound()
 
 availablePiecesDisplay()
 
