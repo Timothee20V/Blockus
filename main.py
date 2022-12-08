@@ -1,5 +1,6 @@
 import grid as g
 import player as p
+from save_load import globalSave,loadDataCounter,loadDataRound,loadGameBoard,loadGamePiece
 from tkinter import *
 from PIL import Image, ImageTk
 from functools import partial
@@ -196,13 +197,26 @@ informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
 
-player1 = p.Player("blue", "B", jeu)
-player2 = p.Player("red", "R", jeu)
-player3 = p.Player("yellow", "Y", jeu)
-player4 = p.Player("green", "G", jeu)
+colorSwitch = ["Blue","Red","Yellow","Green"]
+
+for color in colorSwitch:
+
+    listPiece=loadGamePiece(color)
+    if(listPiece=={}):
+        listPiece="None"
+
+    if(color =="Blue"):
+        player1 = p.Player("blue", "B", jeu,listPiece)
+    elif(color=="Red"):
+        player2 = p.Player("red", "R", jeu,listPiece)
+    elif(color=="Yellow"):
+        player3 = p.Player("yellow", "Y", jeu,listPiece)
+    elif(color=="Green"):
+        player4 = p.Player("green", "G", jeu,listPiece)
+
 player = player1
-counter = 1
-roundGame =0
+counter = loadDataCounter()
+roundGame =loadDataRound()
 
 availablePiecesDisplay()
 

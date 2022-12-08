@@ -1,15 +1,18 @@
 class Player:
     # initialisation des paramètres
-    def __init__(self, color, initial, grid):
+    def __init__(self, color, initial, grid,piecesList):
         self.color = color
         self.initial = initial
-        self.namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
-                              5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
-                              9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
-                              13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
-                              17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
-                              21: "pieces/piece21"
-                              }
+        if(piecesList=="None") :
+            self.namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
+                                5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
+                                9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
+                                13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
+                                17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
+                                21: "pieces/piece21"
+                                }
+        else:
+            self.namePieceList = piecesList
         self.namePieceListImg = {1: "pieces/{}/piece1.png".format(self.color),
                                  2: "pieces/{}/piece2.png".format(self.color),
                                  3: "pieces/{}/piece3.png".format(self.color),

@@ -21,7 +21,19 @@ def saveGamePieces(grillePiece,color):
             file.write(str(i+1)+" "+grillePiece.get(i+1))
             file.write("\n")
 
-             
+def saveDataTour(round,counter):
+    with open("save/save_otherData", "w") as file:
+        file.write(round)
+        file.write("\n")
+        file.write(counter)
+
+def globalSave(plateau,grillePiece,round,counter):
+    colorRef=["Red","Green","Blue","Yellow"]
+    saveGameBoard(plateau)
+    for color in colorRef:
+        saveGamePieces(grillePiece,color)
+    saveDataTour(round,counter)
+
 
 def loadGameBoard():
     returnplateau = []
@@ -46,3 +58,19 @@ def loadGamePiece(color):
         for line in file:
             returnpiece.update({int(line.split(" ")[0]):line.split(" ")[1].strip()})
     return returnpiece
+
+def loadDataRound():
+    returnData=[]
+    with open("save/save_otherData", "r") as file:
+     for line in file:
+        returnData.append(int(line.strip()))
+    return returnData[0]
+
+def loadDataCounter():
+    returnData=[]
+    with open("save/save_otherData", "r") as file:
+     for line in file:
+        returnData.append(int(line.strip()))
+    return returnData[1]
+
+print(loadDataCounter())
