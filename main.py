@@ -1,7 +1,7 @@
 import grid as g
 import player as p
 from tkinter import *
-from PIL import Image, ImageTk
+from PIL import Image
 from functools import partial
 import shutil
 
@@ -24,7 +24,7 @@ def count(mainCount):
         shutil.rmtree('pieces/piecesX2/pieces/green')
         shutil.copytree('pieces/Start/green', 'pieces/green')
         shutil.copytree('pieces/Start/pieces/green', 'pieces/piecesX2/pieces/green')
-        return mainCount + 1
+    return mainCount + 1
 
 
 def takeCoord(event):
@@ -32,16 +32,12 @@ def takeCoord(event):
     global counter
     global roundGame
 
-
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(329, 230, text=x)
     informations.create_text(329, 240, text=y)
 
     if available(x, y):
-        if(roundGame==0):
-            #faire la règle pour le premier tour
-            roundGame = roundGame #a supprimer après
 
         player.putPiece(piece - 1, (x, y))
         player.removePiece(piece)
@@ -59,8 +55,8 @@ def takeCoord(event):
             counter = 0
             roundGame += 1
 
-    jeu.updateGridTk(game)
-    availablePiecesDisplay()
+        jeu.updateGridTk(game)
+        availablePiecesDisplay()
 
 
 def modifPiece(event):
@@ -83,29 +79,72 @@ def modifPiece(event):
 
 
 def available(x, y):
+    inAngle = False
+
+    beginningTurn = False
+
+    nextToColor = False
+
+    # Beginning or not ?
+    if len(player.namePieceList) == 21:
+        beginningTurn = True
+
+    # Check multiple condition of each part of the piece
     for cell in player.pieceToCoord()[piece - 1]:
         cellX, cellY = cell
 
+        # Piece is outside the box or on another piece or not available?
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
                 x + cellX - 2 < 0 or y + cellY - 2 < 0 or \
                 jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0 or \
                 piece not in player.namePieceList:
             informations.create_text(329, 250, text='Impossible')
+            print('Piece is outside the box or on another piece or not available')
             return False
-        try:
-            if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 - 1] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 - 1] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 + 1] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 + 1] != 0:
-                informations.create_text(329, 250, text='Impossible')
-                return False
-        except IndexError:
-            print("Bordure")
+
+        # Part of the piece is in the angle at the beginning ?
+        if beginningTurn and \
+                ((x + cellX - 2, y + cellY - 2) == (0, 0) or
+                 (x + cellX - 2, y + cellY - 2) == (0, 19) or
+                 (x + cellX - 2, y + cellY - 2) == (19, 0) or
+                 (x + cellX - 2, y + cellY - 2) == (19, 19)):
+            inAngle = True
+            print('Part of the piece is in the angle at the beginning')
+
+        # Piece is too attached to his color ?
+        if not beginningTurn and \
+                (x + cellX - 2 != 0 and jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2] == player.initial or
+                 x + cellX - 2 != 19 and jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2] == player.initial or
+                 y + cellY - 2 != 0 and jeu.arrayGrid[x + cellX - 2][y + cellY - 2 - 1] == player.initial or
+                 y + cellY - 2 != 19 and jeu.arrayGrid[x + cellX - 2][y + cellY - 2 + 1] == player.initial):
+            informations.create_text(329, 250, text='Impossible')
+            print('Piece is too attached to his color')
+            return False
+
+        # Part of the piece is next to his color ?
+        if not beginningTurn and \
+                (x + cellX - 2 != 0 and y + cellY - 2 != 0 and
+                 jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 1] == player.initial) or \
+                (x + cellX - 2 != 19 and y + cellY - 2 != 0 and
+                 jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 1] == player.initial) or \
+                (x + cellX - 2 != 0 and y + cellY - 2 != 19 and
+                 jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 1] == player.initial) or \
+                (x + cellX - 2 != 19 and y + cellY - 2 != 19 and
+                 jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 1] == player.initial):
+            nextToColor = True
+            print('Part of the piece is next to his color')
+
+    # Piece is in the angle at the beginning ?
+    if beginningTurn and not inAngle:
+        informations.create_text(329, 250, text='Le 1er tour est au niveau des angles')
+        print("Piece is in the angle at the beginning")
+        return False
+
+    # Piece is next to his color ?
+    if not beginningTurn and not nextToColor:
+        print("Piece is next to his color")
+        return False
 
     return True
 
@@ -128,7 +167,7 @@ def pieceFollowing(event):
             y = int((event.y - jeu.offsetY) / sizeCells)
             game.coords(img, x * 40 - 50, y * 40 - 50)
     except:
-        print("Pas de piece à afficher")
+        print("")
 
 
 def availablePiecesDisplay():
@@ -154,8 +193,6 @@ def availablePiecesDisplay():
                     informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
                     btn = Button(informations, image=img, command=partial(selectionPiece, num))
                     btn.place(x=oX + (100 + space) * j, y=oY + (100 + space) * i)
-                else:
-                    print("ok")
 
 
 def selectionPiece(num):
@@ -174,8 +211,6 @@ sizeCells = 40
 turn = 0
 offsetX = 30
 offsetY = 30
-
-count = 0
 
 temp = {}
 
@@ -202,7 +237,7 @@ player3 = p.Player("yellow", "Y", jeu)
 player4 = p.Player("green", "G", jeu)
 player = player1
 counter = 1
-roundGame =0
+roundGame = 0
 
 availablePiecesDisplay()
 
