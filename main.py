@@ -1,6 +1,7 @@
 import grid as g
 import player as p
-import copy as c
+import copy
+import os
 from save_load import *
 from tkinter import *
 from PIL import Image
@@ -45,19 +46,6 @@ def takeCoord(event):
     if available(x, y):
         player.putPiece(piece - 1, (x, y))
         player.removePiece(piece)
-
-        print(player1.color)
-        print(player1.namePieceList)
-        print("\n")
-        print(player2.color)
-        print(player2.namePieceList)
-        print("\n")
-        print(player3.color)
-        print(player3.namePieceList)
-        print("\n")
-        print(player4.color)
-        print(player4.namePieceList)
-        print("\n")
 
         if counterGame == 0 and player1.surrend != True:
             player = player1
@@ -245,35 +233,21 @@ def reset(event):
                             20: "pieces/{}/piece20.png".format(color),
                             21: "pieces/{}/piece21.png".format(color)
                             }
+            if(color==player1.color):
+                player1.namePieceList = copy.deepcopy(namePieceListBase)
+                player1.namePieceListImg = copy.deepcopy(namePieceListBaseImg)
+            elif(color==player2.color):
+                player2.namePieceList = copy.deepcopy(namePieceListBase)
+                player2.namePieceListImg = copy.deepcopy(namePieceListBaseImg)
+            elif(color==player3.color):
+                player3.namePieceList = copy.deepcopy(namePieceListBase)
+                player3.namePieceListImg = copy.deepcopy(namePieceListBaseImg)
+            elif(color==player4.color):
+                player4.namePieceList = copy.deepcopy(namePieceListBase)
+                player4.namePieceListImg = copy.deepcopy(namePieceListBaseImg)
 
-            if (color == player1.color):
-                player1.namePieceList = loadGamePiece(player1.color)
-                player1.namePieceListImg = namePieceListBaseImg
-                player = player1
-                counterGame = 1
-            elif (color == player2.color):
-                player2.namePieceList = loadGamePiece(player2.color)
-                player2.namePieceListImg = namePieceListBaseImg
-            elif (color == player3.color):
-                player3.namePieceList = loadGamePiece(player3.color)
-                player3.namePieceListImg = namePieceListBaseImg
-            elif (color == player4.color):
-                player4.namePieceList = loadGamePiece(player4.color)
-                player4.namePieceListImg = namePieceListBaseImg
-
-        print(player1.color)
-        print(player1.namePieceList)
-        print("\n")
-        print(player2.color)
-        print(player2.namePieceList)
-        print("\n")
-        print(player3.color)
-        print(player3.namePieceList)
-        print("\n")
-        print(player4.color)
-        print(player4.namePieceList)
-        print("\n")
-
+        player = player1
+        counterGame = 1
 
         game.delete('all')
         jeu.creationArrayGrid(loadGameBoard())
@@ -285,7 +259,6 @@ def reset(event):
 
         availablePiecesDisplay()
         jeu.updateGridTk(game)
-    availablePiecesDisplay()
         
 
 
