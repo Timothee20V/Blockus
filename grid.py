@@ -46,3 +46,35 @@ class Grid:
             for line in self.arrayGrid:
                 print(line[i], end=' ')
             print()
+
+    def countCells(self):
+        b = 0
+        r = 0
+        y = 0
+        g = 0
+        max = 0
+        winner = 0
+        for i in self.arrayGrid:
+            for j in i:
+                if j == 'B':
+                    b += 1
+                if j == 'R':
+                    r += 1
+                if j == 'Y':
+                    y += 1
+                if j == 'G':
+                    g += 1
+
+        if b > max:
+            max = b
+            winner = 'b'
+        if r > max:
+            max = r
+            winner = 'b'
+        if y > max:
+            max = y
+            winner = 'y'
+        if g > max:
+            winner = 'g'
+
+        return winner, b, r, y, g

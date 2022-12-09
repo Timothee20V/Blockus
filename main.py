@@ -77,6 +77,9 @@ def modifPiece(event):
         imFlip = image.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
         imFlip.save("pieces/piecesX2/{}".format(player.namePieceListImg[piece]))
 
+    if event.keysym == 'f':
+        print(jeu.countCells())
+
 
 def available(x, y):
     inAngle = False
@@ -159,15 +162,13 @@ def pieceFollowing(event):
         temp[fileImg] = img
         img = game.create_image(-330, -330, image=img, anchor='nw')
 
-        if x > 830 or x < 30 or y > 830 or y < 30:
-            '''availablePiecesDisplay()'''
-        else:
+        if not x > 830 or x < 30 or y > 830 or y < 30:
             jeu.updateGridTk(game)
             x = int((event.x - jeu.offsetX) / sizeCells)
             y = int((event.y - jeu.offsetY) / sizeCells)
             game.coords(img, x * 40 - 50, y * 40 - 50)
     except:
-        print("")
+        var = True
 
 
 def availablePiecesDisplay():

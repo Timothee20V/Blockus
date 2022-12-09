@@ -6,30 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="17828881-835e-4227-811b-75a972c02e26" name="Changes" comment="Bugfix impossible de poser une piece angle bas droit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/grid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/blue/piece11.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/blue/piece11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/blue/piece12.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/blue/piece12.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/blue/piece18.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/blue/piece18.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/blue/piece20.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/blue/piece20.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/blue/piece5.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/blue/piece5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/green/piece11.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/green/piece11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/green/piece12.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/green/piece12.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/green/piece18.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/green/piece18.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece11.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece12.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece12.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece18.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece18.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece20.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece20.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece5.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/blue/piece5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/green/piece11.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/green/piece11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/green/piece12.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/green/piece12.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/green/piece18.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/green/piece18.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/red/piece11.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/red/piece11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/red/piece13.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/red/piece13.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/piecesX2/pieces/yellow/piece18.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/piecesX2/pieces/yellow/piece18.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/red/piece11.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/red/piece11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/red/piece13.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/red/piece13.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pieces/yellow/piece18.png" beforeDir="false" afterPath="$PROJECT_DIR$/pieces/yellow/piece18.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/regle.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +28,7 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="regle" />
-                    <option name="lastUsedInstant" value="1670523863" />
+                    <option name="lastUsedInstant" value="1670602855" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -152,19 +130,8 @@
     <MESSAGE value="Bugfix impossible de poser une piece angle bas droit" />
     <option name="LAST_COMMIT_MESSAGE" value="Bugfix impossible de poser une piece angle bas droit" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>169</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/E3a_projet_informatique$main.coverage" NAME="main Coverage Results" MODIFIED="1670361071328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/main_py$main.coverage" NAME="main Coverage Results" MODIFIED="1670533345972" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/main_py$main.coverage" NAME="main Coverage Results" MODIFIED="1670603884206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
