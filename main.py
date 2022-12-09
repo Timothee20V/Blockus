@@ -193,68 +193,6 @@ def reset():
     for playerName in playerBase :
         saveGamePieces(namePieceListBase,playerName)
 
-    mainCount = 0
-    mainCount = count(mainCount)
-
-    piece = 1
-    numberCells = 20
-    sizeCells = 40
-    turn = 0
-    offsetX = 30
-    offsetY = 30
-
-    count = 0
-
-    temp = {}
-
-    
-    jeu = g.Grid(offsetX, offsetY, sizeCells, loadGameBoard(), numberCells)
-
-    window = Tk()
-    window.title("Blokus")
-    window.attributes('-fullscreen', True)
-
-    game = Canvas(window, width=870, height=860)
-
-    game.grid(row=0, column=0)
-    game.create_rectangle(offsetX, offsetY, 830, 830)
-    game.create_line(871, 0, 871, 860, width=2)
-
-    informations = Canvas(window, width=658, height=860)
-    informations.grid(row=0, column=1)
-
-    jeu.creationGridTk(game)
-
-    colorSwitch= ["blue","red","yellow","green"]
-
-    for color in colorSwitch:
-
-        listPiece=loadGamePiece(color)
-        if(listPiece=={}):
-            listPiece="None"
-
-        if(color =="blue"):
-            player1 = p.Player("blue", "B", jeu,listPiece)
-        elif(color=="red"):
-            player2 = p.Player("red", "R", jeu,listPiece)
-        elif(color=="yellow"):
-            player3 = p.Player("yellow", "Y", jeu,listPiece)
-        elif(color=="green"):
-            player4 = p.Player("green", "G", jeu,listPiece)
-
-    player = player1
-    counterGame = loadDataCounter()
-
-    availablePiecesDisplay()
-
-    game.bind('<Button-1>', takeCoord)
-
-    window.bind('<Escape>', lambda e: endGame())
-    window.bind('<Key>', modifPiece)
-    window.bind('<t>', lambda e: reset())
-    game.bind('<Motion>', pieceFollowing)
-
-    window.mainloop()
 
 
 
