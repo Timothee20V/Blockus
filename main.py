@@ -175,7 +175,7 @@ def endGame():
 
 
 def reset():
-    global player, counterGame, turn, temp, piece, count, mainCount
+    global counterGame
 
     plateauSave = [['0' for i in range(20)] for j in range(20)]
     saveGameBoard(plateauSave)
@@ -197,6 +197,7 @@ def reset():
     player3.namePieceList = namePieceListBase
     player4.namePieceList = namePieceListBase
 
+    counterGame = loadDataCounter()
 
     game.delete('all')
     jeu.creationArrayGrid(loadGameBoard())
