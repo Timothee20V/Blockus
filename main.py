@@ -254,7 +254,20 @@ def nextPlayer():
     # If all player can't play, end the game
     if player.surrend:
         window.destroy()
-        print(game.countCells())
+        # Display the scores
+        winner, b, r, y, g = game.countCells()
+        if winner == 'b':
+            print("The winner is the Blue Player !!")
+        if winner == 'r':
+            print("The winner is the Red Player !!")
+        if winner == 'y':
+            print("The winner is the Yellow Player !!")
+        if winner == 'g':
+            print("The winner is the Green Player !!")
+        print("Blue Player with {} cells".format(b))
+        print("Red Player with {} cells".format(r))
+        print("Yellow Player with {} cells".format(b))
+        print("Green Player with {} cells".format(g))
     else:
         game.updateGridTk(gameWindow)
         availablePiecesDisplay()
