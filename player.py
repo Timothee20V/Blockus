@@ -1,8 +1,9 @@
 class Player:
-    # initialisation des paramètres
     def __init__(self, color, initial, grid):
         self.color = color
         self.initial = initial
+
+        # List of all the piece paths of txt files
         self.namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
                               5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
                               9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
@@ -10,6 +11,8 @@ class Player:
                               17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
                               21: "pieces/piece21"
                               }
+
+        # List of all the piece paths of png files
         self.namePieceListImg = {1: "pieces/{}/piece1.png".format(self.color),
                                  2: "pieces/{}/piece2.png".format(self.color),
                                  3: "pieces/{}/piece3.png".format(self.color),
@@ -32,17 +35,20 @@ class Player:
                                  20: "pieces/{}/piece20.png".format(self.color),
                                  21: "pieces/{}/piece21.png".format(self.color)
                                  }
-
+        # All the pieces coordinates
         self.pieces = []
+
+        # Grid of the game
         self.grid = grid
         self.convertTextFiles()
         self.usedPieces = []
         self.surrend = False
 
-    # Convertion des fichiers textes en une liste de pieces
+    # Converting text files into a pieces list
     def convertTextFiles(self):
         pieceSelectedModel = []
 
+        # Travel the txt file
         for pieceNum in range(1, 22):
             with open(self.namePieceList[pieceNum], "r") as f:
 
@@ -54,16 +60,16 @@ class Player:
                         if pieceSelectedModel[length][width] == "1":
                             pieceSelectedModel[length][width] = self.initial
 
+                # Add the pieces to the list
                 self.pieces.append(pieceSelectedModel)
                 pieceSelectedModel = []
 
-    # retourne le contenu du dictionnaire
+    # Remove used pieces
     def removePiece(self, numPiece):
         self.namePieceList.pop(numPiece)
         self.namePieceListImg.pop(numPiece)
 
-
-
+    # Transform the piece into tuple of coordinates
     def pieceToCoord(self):
         piecesInCoord = []
 
@@ -76,8 +82,10 @@ class Player:
                         thePiece.append(coord)
             piecesInCoord.append(thePiece)
 
+        # Return the piece in coordinate
         return piecesInCoord
 
+    # Allow the rotation of the piece
     def rotationPieces(self, pieceSelected):
         thePiece = self.pieces[pieceSelected - 1]
 
@@ -88,6 +96,7 @@ class Player:
         self.pieces[pieceSelected - 1] = returnedPiece
         print(self.pieceToCoord()[pieceSelected - 1])
 
+    # Allow the symetry of the piece
     def symmetryPieces(self, pieceSelected):
         thePiece = self.pieces[pieceSelected - 1]
         theNewPiece = []
@@ -100,6 +109,7 @@ class Player:
         self.pieces[pieceSelected - 1] = theNewPiece
         print(self.pieceToCoord()[pieceSelected - 1])
 
+    # Put the piece in the game grid
     def putPiece(self, num, coord):
         coordX, coordY = coord
         self.usedPieces.append(num)
@@ -107,6 +117,8 @@ class Player:
         print("piece placé:")
         print(piece)
         print(num)
+
+        # Put initials in cells
         for i in range(len(piece)):
             pX, pY = piece[i]
             self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial
