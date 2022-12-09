@@ -12,7 +12,7 @@ class Player:
                                 21: "pieces/piece21"
                                 }
         else:
-            self.updateDict(piecesList)
+            self.namePieceList = piecesList
         self.namePieceListImg = {1: "pieces/{}/piece1.png".format(self.color),
                                  2: "pieces/{}/piece2.png".format(self.color),
                                  3: "pieces/{}/piece3.png".format(self.color),
@@ -64,9 +64,6 @@ class Player:
     def removePiece(self, numPiece):
         self.namePieceList.pop(numPiece)
         self.namePieceListImg.pop(numPiece)
-
-    def updateDict(self,piecesList):
-        self.namePieceList = piecesList
 
     def pieceToCoord(self):
         piecesInCoord = []
