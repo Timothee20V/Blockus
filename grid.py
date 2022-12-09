@@ -3,7 +3,6 @@ class Grid:
         self.offsetX = x
         self.offsetY = y
         self.sizeCell = sizeCell
-        self.arrayGrid = arrayGrid
         self.numberCells = numberCells
         self.creationArrayGrid(arrayGrid)
 
@@ -26,7 +25,7 @@ class Grid:
         game.delete('text')
         for i in range(len(self.arrayGrid)):
             for j in range(len(self.arrayGrid)):
-                if self.arrayGrid[i][j] != 0:
+                if self.arrayGrid[i][j] != '0':
                     game.create_text(i * self.sizeCell + self.offsetX + self.sizeCell / 2,
                                      j * self.sizeCell + self.offsetY + self.sizeCell / 2,
                                      text=self.arrayGrid[i][j],
@@ -34,11 +33,12 @@ class Grid:
                                      )
 
     def creationArrayGrid(self, arrayGrid):
-        for line in range(self.numberCells):
-            nvline = []
-            for col in range(self.numberCells):
-                nvline.append((0))
-            arrayGrid.append(nvline)
+        if(arrayGrid==[]):
+            for line in range(self.numberCells):
+                nvline = []
+                for col in range(self.numberCells):
+                    nvline.append(('0'))
+                arrayGrid.append(nvline)
         self.arrayGrid = arrayGrid
 
     def arrayGridDisplay(self):

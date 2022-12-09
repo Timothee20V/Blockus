@@ -86,19 +86,19 @@ def available(x, y):
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
                 x + cellX - 2 < 0 or y + cellY - 2 < 0 or \
-                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0 or \
+                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != '0' or \
                 piece not in player.namePieceList:
             informations.create_text(329, 250, text='Impossible')
             return False
         try:
-            if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 0] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 - 1] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 - 1] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 + 1] != 0 or \
-                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 + 1] != 0:
+            if jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 0] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 0] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 0] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 0] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 - 1] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 - 1] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 - 0][y + cellY - 2 + 1] != '0' or \
+                    jeu.arrayGrid[x + cellX - 2 + 0][y + cellY - 2 + 1] != '0':
                 informations.create_text(329, 250, text='Impossible')
                 return False
         except IndexError:
@@ -176,10 +176,13 @@ def endGame():
 
 
 def reset():
-    plateauSave = [[0 for i in range(20)]for j in range(20)]
-    saveGameBoard(plateauSave)
+    global player, counterGame, turn, temp, piece, count, mainCount
 
-    playerBase = [player1.color,player2.color,player3.color,player4.color]
+    plateauSave = [['0' for i in range(20)]for j in range(20)]
+    saveGameBoard(plateauSave)
+    saveDataTour(1)
+
+    playerBase = ["red","blue","green","yellow"]
     namePieceListBase = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
                     5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
                     9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
@@ -190,6 +193,68 @@ def reset():
     for playerName in playerBase :
         saveGamePieces(namePieceListBase,playerName)
 
+    mainCount = 0
+    mainCount = count(mainCount)
+
+    piece = 1
+    numberCells = 20
+    sizeCells = 40
+    turn = 0
+    offsetX = 30
+    offsetY = 30
+
+    count = 0
+
+    temp = {}
+
+    
+    jeu = g.Grid(offsetX, offsetY, sizeCells, loadGameBoard(), numberCells)
+
+    window = Tk()
+    window.title("Blokus")
+    window.attributes('-fullscreen', True)
+
+    game = Canvas(window, width=870, height=860)
+
+    game.grid(row=0, column=0)
+    game.create_rectangle(offsetX, offsetY, 830, 830)
+    game.create_line(871, 0, 871, 860, width=2)
+
+    informations = Canvas(window, width=658, height=860)
+    informations.grid(row=0, column=1)
+
+    jeu.creationGridTk(game)
+
+    colorSwitch= ["blue","red","yellow","green"]
+
+    for color in colorSwitch:
+
+        listPiece=loadGamePiece(color)
+        if(listPiece=={}):
+            listPiece="None"
+
+        if(color =="blue"):
+            player1 = p.Player("blue", "B", jeu,listPiece)
+        elif(color=="red"):
+            player2 = p.Player("red", "R", jeu,listPiece)
+        elif(color=="yellow"):
+            player3 = p.Player("yellow", "Y", jeu,listPiece)
+        elif(color=="green"):
+            player4 = p.Player("green", "G", jeu,listPiece)
+
+    player = player1
+    counterGame = loadDataCounter()
+
+    availablePiecesDisplay()
+
+    game.bind('<Button-1>', takeCoord)
+
+    window.bind('<Escape>', lambda e: endGame())
+    window.bind('<Key>', modifPiece)
+    window.bind('<t>', lambda e: reset())
+    game.bind('<Motion>', pieceFollowing)
+
+    window.mainloop()
 
 
 
@@ -250,7 +315,7 @@ game.bind('<Button-1>', takeCoord)
 
 window.bind('<Escape>', lambda e: endGame())
 window.bind('<Key>', modifPiece)
-
+window.bind('<t>', lambda e: reset())
 game.bind('<Motion>', pieceFollowing)
 
 window.mainloop()
