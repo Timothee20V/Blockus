@@ -7,7 +7,6 @@ from functools import partial
 import shutil
 
 
-
 def count(mainCount):
     if mainCount == 0:
         shutil.rmtree('pieces/blue')
@@ -33,7 +32,6 @@ def takeCoord(event):
     global player
     global counterGame
 
-
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
     informations.create_text(329, 230, text=x)
@@ -54,7 +52,6 @@ def takeCoord(event):
         elif counterGame == 3 and player4.surrend != True:
             player = player4
             counterGame = 0
-
 
     jeu.updateGridTk(game)
     availablePiecesDisplay()
@@ -125,7 +122,7 @@ def pieceFollowing(event):
             y = int((event.y - jeu.offsetY) / sizeCells)
             game.coords(img, x * 40 - 50, y * 40 - 50)
     except:
-        x=1
+        x = 1
 
 
 def availablePiecesDisplay():
@@ -135,6 +132,8 @@ def availablePiecesDisplay():
 
     informations = Canvas(window, width=658, height=860)
     informations.grid(row=0, column=1)
+
+    print(player.namePieceList)
 
     for i in range(5):
         for j in range(5):
@@ -152,7 +151,7 @@ def availablePiecesDisplay():
                     btn = Button(informations, image=img, command=partial(selectionPiece, num))
                     btn.place(x=oX + (100 + space) * j, y=oY + (100 + space) * i)
                 else:
-                    print("ok")
+                    val = True
 
 
 def selectionPiece(num):
@@ -163,37 +162,49 @@ def selectionPiece(num):
 
 
 def endGame():
-    playerBaseColor = [player1.color,player2.color,player3.color,player4.color]
-    playerBaseNameList =[player1.namePieceList,player2.namePieceList,player3.namePieceList,player4.namePieceList]
-    i=0
+    playerBaseColor = [player1.color, player2.color, player3.color, player4.color]
+    playerBaseNameList = [player1.namePieceList, player2.namePieceList, player3.namePieceList, player4.namePieceList]
+    i = 0
 
     saveGameBoard(jeu.arrayGrid)
     saveDataTour(counterGame)
     for playerColor in playerBaseColor:
-        saveGamePieces(playerBaseNameList[i],playerColor)
-        i+=1
+        saveGamePieces(playerBaseNameList[i], playerColor)
+        i += 1
     window.destroy()
 
 
 def reset():
     global player, counterGame, turn, temp, piece, count, mainCount
 
-    plateauSave = [['0' for i in range(20)]for j in range(20)]
+    plateauSave = [['0' for i in range(20)] for j in range(20)]
     saveGameBoard(plateauSave)
     saveDataTour(1)
 
-    playerBase = ["red","blue","green","yellow"]
+    playerBase = ["red", "blue", "green", "yellow"]
     namePieceListBase = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
-                    5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
-                    9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
-                    13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
-                    17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
-                    21: "pieces/piece21"
-                    }
-    for playerName in playerBase :
-        saveGamePieces(namePieceListBase,playerName)
+                         5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
+                         9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
+                         13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
+                         17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
+                         21: "pieces/piece21"
+                         }
+    for playerName in playerBase:
+        saveGamePieces(namePieceListBase, playerName)
+
+    player1.namePieceList = namePieceListBase
+    player2.namePieceList = namePieceListBase
+    player3.namePieceList = namePieceListBase
+    player4.namePieceList = namePieceListBase
 
 
+    game.delete('all')
+    jeu.creationArrayGrid(loadGameBoard())
+    jeu.creationGridTk(game)
+
+    game.create_rectangle(offsetX, offsetY, 830, 830)
+    availablePiecesDisplay()
+    jeu.updateGridTk(game)
 
 
 mainCount = 0
@@ -227,22 +238,22 @@ informations.grid(row=0, column=1)
 
 jeu.creationGridTk(game)
 
-colorSwitch= ["blue","red","yellow","green"]
+colorSwitch = ["blue", "red", "yellow", "green"]
 
 for color in colorSwitch:
 
-    listPiece=loadGamePiece(color)
-    if(listPiece=={}):
-        listPiece="None"
+    listPiece = loadGamePiece(color)
+    if (listPiece == {}):
+        listPiece = "None"
 
-    if(color =="blue"):
-        player1 = p.Player("blue", "B", jeu,listPiece)
-    elif(color=="red"):
-        player2 = p.Player("red", "R", jeu,listPiece)
-    elif(color=="yellow"):
-        player3 = p.Player("yellow", "Y", jeu,listPiece)
-    elif(color=="green"):
-        player4 = p.Player("green", "G", jeu,listPiece)
+    if (color == "blue"):
+        player1 = p.Player("blue", "B", jeu, listPiece)
+    elif (color == "red"):
+        player2 = p.Player("red", "R", jeu, listPiece)
+    elif (color == "yellow"):
+        player3 = p.Player("yellow", "Y", jeu, listPiece)
+    elif (color == "green"):
+        player4 = p.Player("green", "G", jeu, listPiece)
 
 player = player1
 counterGame = loadDataCounter()
