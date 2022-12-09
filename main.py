@@ -4,9 +4,36 @@ from tkinter import *
 from PIL import Image
 from functools import partial
 import shutil
+from save_load import *
+import os
+import copy
 
 
-def count(mainCount):
+def start():
+    global player
+    global player1
+    global player2
+    global player3
+    global player4
+    global window
+    global game
+    global informations
+    global jeu
+    global mainCount
+
+    jeu = g.Grid(offsetX, offsetY, sizeCells, [], numberCells)
+
+    game = Canvas(window, width=870, height=860)
+
+    game.grid(row=0, column=0)
+    game.create_rectangle(offsetX, offsetY, 830, 830)
+    game.create_line(871, 0, 871, 860, width=2)
+
+    informations = Canvas(window, width=658, height=860)
+    informations.grid(row=0, column=1)
+
+    jeu.creationGridTk(game)
+
     if mainCount == 0:
         shutil.rmtree('pieces/blue')
         shutil.rmtree('pieces/piecesX2/pieces/blue')
@@ -24,42 +51,106 @@ def count(mainCount):
         shutil.rmtree('pieces/piecesX2/pieces/green')
         shutil.copytree('pieces/Start/green', 'pieces/green')
         shutil.copytree('pieces/Start/pieces/green', 'pieces/piecesX2/pieces/green')
-    return mainCount + 1
+
+        player1 = p.Player("blue", "B", jeu)
+        player2 = p.Player("red", "R", jeu)
+        player3 = p.Player("yellow", "Y", jeu)
+        player4 = p.Player("green", "G", jeu)
+        player = player1
+
+        if os.path.exists('save/save_otherData.txt'):
+            if loadDataCounter() == 'bleu':
+                player = player1
+            if loadDataCounter() == 'red':
+                player = player2
+            if loadDataCounter() == 'yellow':
+                player = player3
+            if loadDataCounter() == 'green':
+                player = player4
+
+        namePieceList = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
+                         5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
+                         9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
+                         13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
+                         17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
+                         21: "pieces/piece21"
+                         }
+
+        if os.path.exists('save/save_piecesB.txt') and loadGamePiece(player1.color) != {}:
+            player1.namePieceList = loadGamePiece(player1.color)
+        else:
+            player1.namePieceList = copy.deepcopy(namePieceList)
+
+        if os.path.exists('save/save_piecesR.txt') and loadGamePiece(player2.color) != {}:
+            player2.namePieceList = loadGamePiece(player2.color)
+        else:
+            player2.namePieceList = copy.deepcopy(namePieceList)
+
+        if os.path.exists('save/save_piecesY.txt') and loadGamePiece(player3.color) != {}:
+            player3.namePieceList = loadGamePiece(player3.color)
+        else:
+            player3.namePieceList = copy.deepcopy(namePieceList)
+
+        if os.path.exists('save/save_piecesG.txt') and loadGamePiece(player4.color) != {}:
+            player4.namePieceList = loadGamePiece(player4.color)
+        else:
+            player4.namePieceList = copy.deepcopy(namePieceList)
+
+        if os.path.exists('save/save_plateau.txt'):
+            jeu.arrayGrid = loadGameBoard()
+
+        saveGameBoard(jeu.arrayGrid)
+        saveGamePieces(player1.namePieceList, player1.color)
+        saveGamePieces(player2.namePieceList, player2.color)
+        saveGamePieces(player3.namePieceList, player3.color)
+        saveGamePieces(player4.namePieceList, player4.color)
+        saveDataTour(player.color)
+
+        mainCount + 1
+
+        availablePiecesDisplay()
+
+    game.bind('<Button-1>', takeCoord)
+
+    window.bind('<Escape>', lambda e: endGame())
+    window.bind('<Key>', keyboard)
+
+    game.bind('<Motion>', pieceFollowing)
 
 
 def takeCoord(event):
     global player
-    global counter
-    global roundGame
 
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
-    informations.create_text(329, 230, text=x)
-    informations.create_text(329, 240, text=y)
+    printInformation(x)
+    printInformation(y)
+    print(player.namePieceList)
 
     if available(x, y):
-
         player.putPiece(piece - 1, (x, y))
+        print(player.initial)
+        print(player2.namePieceList)
+        print(player)
         player.removePiece(piece)
-        if counter == 0 and player1.surrend != True:
+        print(player2.namePieceList)
+        print(player.initial)
+        if player == player4 and player1.surrend != True:
             player = player1
-            counter += 1
-        elif counter == 1 and player2.surrend != True:
+        elif player == player1 and player2.surrend != True:
             player = player2
-            counter += 1
-        elif counter == 2 and player3.surrend != True:
+        elif player == player2 and player3.surrend != True:
             player = player3
-            counter += 1
-        elif counter == 3 and player4.surrend != True:
+        elif player == player3 and player4.surrend != True:
             player = player4
-            counter = 0
-            roundGame += 1
 
         jeu.updateGridTk(game)
         availablePiecesDisplay()
 
 
-def modifPiece(event):
+def keyboard(event):
+    global mainCounttt
+
     if event.keysym == 'r':
         player.rotationPieces(piece)
         image = Image.open(player.namePieceListImg[piece])
@@ -78,7 +169,19 @@ def modifPiece(event):
         imFlip.save("pieces/piecesX2/{}".format(player.namePieceListImg[piece]))
 
     if event.keysym == 'f':
+        window.destroy()
         print(jeu.countCells())
+
+    if event.keysym == 't':
+        os.remove('save/save_otherData.txt')
+        os.remove('save/save_piecesB.txt')
+        os.remove('save/save_piecesG.txt')
+        os.remove('save/save_piecesY.txt')
+        os.remove('save/save_piecesR.txt')
+        os.remove('save/save_plateau.txt')
+        window.destroy()
+        mainCount = 0
+        start()
 
 
 def available(x, y):
@@ -100,10 +203,9 @@ def available(x, y):
         if x + cellX - 2 > jeu.numberCells - 1 or \
                 y + cellY - 2 > jeu.numberCells - 1 or \
                 x + cellX - 2 < 0 or y + cellY - 2 < 0 or \
-                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != 0 or \
+                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != '0' or \
                 piece not in player.namePieceList:
-            informations.create_text(329, 250, text='Impossible')
-            print('Piece is outside the box or on another piece or not available')
+            printInformation('Piece is outside the box or on another piece or not available')
             return False
 
         # Part of the piece is in the angle at the beginning ?
@@ -113,7 +215,7 @@ def available(x, y):
                  (x + cellX - 2, y + cellY - 2) == (19, 0) or
                  (x + cellX - 2, y + cellY - 2) == (19, 19)):
             inAngle = True
-            print('Part of the piece is in the angle at the beginning')
+            printInformation('Part of the piece is in the angle at the beginning')
 
         # Piece is too attached to his color ?
         if not beginningTurn and \
@@ -121,8 +223,8 @@ def available(x, y):
                  x + cellX - 2 != 19 and jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2] == player.initial or
                  y + cellY - 2 != 0 and jeu.arrayGrid[x + cellX - 2][y + cellY - 2 - 1] == player.initial or
                  y + cellY - 2 != 19 and jeu.arrayGrid[x + cellX - 2][y + cellY - 2 + 1] == player.initial):
-            informations.create_text(329, 250, text='Impossible')
-            print('Piece is too attached to his color')
+            printInformation('Impossible')
+            printInformation('Piece is too attached to his color')
             return False
 
         # Part of the piece is next to his color ?
@@ -140,13 +242,12 @@ def available(x, y):
 
     # Piece is in the angle at the beginning ?
     if beginningTurn and not inAngle:
-        informations.create_text(329, 250, text='Le 1er tour est au niveau des angles')
-        print("Piece is in the angle at the beginning")
+        printInformation("Piece must be in the angle at the beginning")
         return False
 
     # Piece is next to his color ?
     if not beginningTurn and not nextToColor:
-        print("Piece is next to his color")
+        printInformation("Piece must be next to his color")
         return False
 
     return True
@@ -172,12 +273,14 @@ def pieceFollowing(event):
 
 
 def availablePiecesDisplay():
+    global informations
     oX = 60
     oY = 300
     space = 10
 
     informations = Canvas(window, width=658, height=860)
     informations.grid(row=0, column=1)
+    printInformation(text)
 
     for i in range(5):
         for j in range(5):
@@ -198,13 +301,27 @@ def availablePiecesDisplay():
 
 def selectionPiece(num):
     global piece
+    global text
     piece = num
-    informations.create_text(329, 200, text=num)
+    printInformation(text=num)
     availablePiecesDisplay()
 
 
-mainCount = 0
-mainCount = count(mainCount)
+def printInformation(text):
+    informations.delete('all')
+    informations.create_text(329, 180, text='Les informations relatives au jeu actuel')
+    informations.create_text(329, 200, text=text)
+
+
+def endGame():
+    saveGameBoard(jeu.arrayGrid)
+    saveGamePieces(player1.namePieceList, player1.color)
+    saveGamePieces(player2.namePieceList, player2.color)
+    saveGamePieces(player3.namePieceList, player3.color)
+    saveGamePieces(player4.namePieceList, player4.color)
+    saveDataTour(player.color)
+    window.destroy()
+
 
 piece = 1
 numberCells = 20
@@ -213,40 +330,15 @@ turn = 0
 offsetX = 30
 offsetY = 30
 
-temp = {}
+text = ''
 
-jeu = g.Grid(offsetX, offsetY, sizeCells, [], numberCells)
+temp = {}
 
 window = Tk()
 window.title("Blokus")
 window.attributes('-fullscreen', True)
 
-game = Canvas(window, width=870, height=860)
-
-game.grid(row=0, column=0)
-game.create_rectangle(offsetX, offsetY, 830, 830)
-game.create_line(871, 0, 871, 860, width=2)
-
-informations = Canvas(window, width=658, height=860)
-informations.grid(row=0, column=1)
-
-jeu.creationGridTk(game)
-
-player1 = p.Player("blue", "B", jeu)
-player2 = p.Player("red", "R", jeu)
-player3 = p.Player("yellow", "Y", jeu)
-player4 = p.Player("green", "G", jeu)
-player = player1
-counter = 1
-roundGame = 0
-
-availablePiecesDisplay()
-
-game.bind('<Button-1>', takeCoord)
-
-window.bind('<Escape>', lambda e: window.destroy())
-window.bind('<Key>', modifPiece)
-
-game.bind('<Motion>', pieceFollowing)
+mainCount = 0
+start()
 
 window.mainloop()

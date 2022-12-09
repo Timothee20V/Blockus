@@ -62,8 +62,6 @@ class Player:
         self.namePieceList.pop(numPiece)
         self.namePieceListImg.pop(numPiece)
 
-
-
     def pieceToCoord(self):
         piecesInCoord = []
 
@@ -110,4 +108,3 @@ class Player:
         for i in range(len(piece)):
             pX, pY = piece[i]
             self.grid.arrayGrid[coordX + pX - 2][coordY + pY - 2] = self.initial
-        
