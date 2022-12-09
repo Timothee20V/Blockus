@@ -114,9 +114,8 @@ class Player:
         coordX, coordY = coord
         self.usedPieces.append(num)
         piece = self.pieceToCoord()[num]
-        print("piece placé:")
+        print("piece placé:", num + 1, ":")
         print(piece)
-        print(num)
 
         # Put initials in cells
         for i in range(len(piece)):
