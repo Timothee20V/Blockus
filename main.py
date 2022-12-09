@@ -23,6 +23,10 @@ def start():
 
     jeu = g.Grid(offsetX, offsetY, sizeCells, [], numberCells)
 
+    window = Tk()
+    window.title("Blokus")
+    window.attributes('-fullscreen', True)
+
     game = Canvas(window, width=870, height=860)
 
     game.grid(row=0, column=0)
@@ -106,7 +110,7 @@ def start():
         saveGamePieces(player4.namePieceList, player4.color)
         saveDataTour(player.color)
 
-        mainCount + 1
+        mainCount = mainCount + 1
 
         availablePiecesDisplay()
 
@@ -125,31 +129,16 @@ def takeCoord(event):
     y = int((event.y - jeu.offsetY) / sizeCells)
     printInformation(x)
     printInformation(y)
-    print(player.namePieceList)
 
     if available(x, y):
         player.putPiece(piece - 1, (x, y))
-        print(player.initial)
-        print(player2.namePieceList)
-        print(player)
         player.removePiece(piece)
-        print(player2.namePieceList)
-        print(player.initial)
-        if player == player4 and player1.surrend != True:
-            player = player1
-        elif player == player1 and player2.surrend != True:
-            player = player2
-        elif player == player2 and player3.surrend != True:
-            player = player3
-        elif player == player3 and player4.surrend != True:
-            player = player4
 
-        jeu.updateGridTk(game)
-        availablePiecesDisplay()
+        nextPlayer()
 
 
 def keyboard(event):
-    global mainCounttt
+    global mainCount
 
     if event.keysym == 'r':
         player.rotationPieces(piece)
@@ -182,6 +171,44 @@ def keyboard(event):
         window.destroy()
         mainCount = 0
         start()
+
+
+def nextPlayer():
+    global player
+    if player == player1 and player2.surrend != True:
+        player = player2
+    elif player == player1 and player3.surrend != True:
+        player = player3
+    elif player == player1 and player4.surrend != True:
+        player = player4
+
+    elif player == player2 and player3.surrend != True:
+        player = player3
+    elif player == player2 and player4.surrend != True:
+        player = player4
+    elif player == player2 and player1.surrend != True:
+        player = player1
+
+    elif player == player3 and player4.surrend != True:
+        player = player4
+    elif player == player3 and player1.surrend != True:
+        player = player1
+    elif player == player3 and player2.surrend != True:
+        player = player2
+
+    elif player == player4 and player1.surrend != True:
+        player = player1
+    elif player == player4 and player2.surrend != True:
+        player = player2
+    elif player == player4 and player3.surrend != True:
+        player = player3
+
+    if player.surrend:
+        window.destroy()
+        print(jeu.countCells())
+    else:
+        jeu.updateGridTk(game)
+        availablePiecesDisplay()
 
 
 def available(x, y):
@@ -282,6 +309,9 @@ def availablePiecesDisplay():
     informations.grid(row=0, column=1)
     printInformation(text)
 
+    lose = Button(informations, text='Joueur bloqué', command=playerStuck)
+    lose.place(x=329, y=150)
+
     for i in range(5):
         for j in range(5):
             if i < 4 or (i == 4 and j == 2):
@@ -309,8 +339,13 @@ def selectionPiece(num):
 
 def printInformation(text):
     informations.delete('all')
-    informations.create_text(329, 180, text='Les informations relatives au jeu actuel')
-    informations.create_text(329, 200, text=text)
+    informations.create_text(329, 80, text='Les informations relatives au jeu actuel')
+    informations.create_text(329, 100, text=text)
+
+
+def playerStuck():
+    player.surrend = True
+    nextPlayer()
 
 
 def endGame():
@@ -333,10 +368,6 @@ offsetY = 30
 text = ''
 
 temp = {}
-
-window = Tk()
-window.title("Blokus")
-window.attributes('-fullscreen', True)
 
 mainCount = 0
 start()
