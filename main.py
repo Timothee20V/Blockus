@@ -16,27 +16,27 @@ def start():
     global player3
     global player4
     global window
-    global game
+    global gameWindow
     global informations
-    global jeu
+    global game
     global mainCount
 
-    jeu = g.Grid(offsetX, offsetY, sizeCells, [], numberCells)
+    game = g.Grid(offsetX, offsetY, sizeCells, [], numberCells)
 
     window = Tk()
     window.title("Blokus")
     window.attributes('-fullscreen', True)
 
-    game = Canvas(window, width=870, height=860)
+    gameWindow = Canvas(window, width=870, height=860)
 
-    game.grid(row=0, column=0)
-    game.create_rectangle(offsetX, offsetY, 830, 830)
-    game.create_line(871, 0, 871, 860, width=2)
+    gameWindow.grid(row=0, column=0)
+    gameWindow.create_rectangle(offsetX, offsetY, 830, 830)
+    gameWindow.create_line(871, 0, 871, 860, width=2)
 
     informations = Canvas(window, width=658, height=860)
     informations.grid(row=0, column=1)
 
-    jeu.creationGridTk(game)
+    game.creationGridTk(gameWindow)
 
     if mainCount == 0:
         shutil.rmtree('pieces/blue')
@@ -56,10 +56,10 @@ def start():
         shutil.copytree('pieces/Start/green', 'pieces/green')
         shutil.copytree('pieces/Start/pieces/green', 'pieces/piecesX2/pieces/green')
 
-        player1 = p.Player("blue", "B", jeu)
-        player2 = p.Player("red", "R", jeu)
-        player3 = p.Player("yellow", "Y", jeu)
-        player4 = p.Player("green", "G", jeu)
+        player1 = p.Player("blue", "B", game)
+        player2 = p.Player("red", "R", game)
+        player3 = p.Player("yellow", "Y", game)
+        player4 = p.Player("green", "G", game)
         player = player1
 
         if os.path.exists('save/save_otherData.txt'):
@@ -101,9 +101,9 @@ def start():
             player4.namePieceList = copy.deepcopy(namePieceList)
 
         if os.path.exists('save/save_plateau.txt'):
-            jeu.arrayGrid = loadGameBoard()
+            game.arrayGrid = loadGameBoard()
 
-        saveGameBoard(jeu.arrayGrid)
+        saveGameBoard(game.arrayGrid)
         saveGamePieces(player1.namePieceList, player1.color)
         saveGamePieces(player2.namePieceList, player2.color)
         saveGamePieces(player3.namePieceList, player3.color)
@@ -114,19 +114,19 @@ def start():
 
         availablePiecesDisplay()
 
-    game.bind('<Button-1>', takeCoord)
+    gameWindow.bind('<Button-1>', takeCoord)
 
     window.bind('<Escape>', lambda e: endGame())
     window.bind('<Key>', keyboard)
 
-    game.bind('<Motion>', pieceFollowing)
+    gameWindow.bind('<Motion>', pieceFollowing)
 
 
 def takeCoord(event):
     global player
 
-    x = int((event.x - jeu.offsetX) / sizeCells)
-    y = int((event.y - jeu.offsetY) / sizeCells)
+    x = int((event.x - game.offsetX) / sizeCells)
+    y = int((event.y - game.offsetY) / sizeCells)
     printInformation(x)
     printInformation(y)
 
@@ -159,7 +159,7 @@ def keyboard(event):
 
     if event.keysym == 'f':
         window.destroy()
-        print(jeu.countCells())
+        print(game.countCells())
 
     if event.keysym == 't':
         os.remove('save/save_otherData.txt')
@@ -205,9 +205,9 @@ def nextPlayer():
 
     if player.surrend:
         window.destroy()
-        print(jeu.countCells())
+        print(game.countCells())
     else:
-        jeu.updateGridTk(game)
+        game.updateGridTk(gameWindow)
         availablePiecesDisplay()
 
 
@@ -227,10 +227,10 @@ def available(x, y):
         cellX, cellY = cell
 
         # Piece is outside the box or on another piece or not available?
-        if x + cellX - 2 > jeu.numberCells - 1 or \
-                y + cellY - 2 > jeu.numberCells - 1 or \
+        if x + cellX - 2 > game.numberCells - 1 or \
+                y + cellY - 2 > game.numberCells - 1 or \
                 x + cellX - 2 < 0 or y + cellY - 2 < 0 or \
-                jeu.arrayGrid[x + cellX - 2][y + cellY - 2] != '0' or \
+                game.arrayGrid[x + cellX - 2][y + cellY - 2] != '0' or \
                 piece not in player.namePieceList:
             printInformation('Piece is outside the box or on another piece or not available')
             return False
@@ -246,10 +246,10 @@ def available(x, y):
 
         # Piece is too attached to his color ?
         if not beginningTurn and \
-                (x + cellX - 2 != 0 and jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2] == player.initial or
-                 x + cellX - 2 != 19 and jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2] == player.initial or
-                 y + cellY - 2 != 0 and jeu.arrayGrid[x + cellX - 2][y + cellY - 2 - 1] == player.initial or
-                 y + cellY - 2 != 19 and jeu.arrayGrid[x + cellX - 2][y + cellY - 2 + 1] == player.initial):
+                (x + cellX - 2 != 0 and game.arrayGrid[x + cellX - 2 - 1][y + cellY - 2] == player.initial or
+                 x + cellX - 2 != 19 and game.arrayGrid[x + cellX - 2 + 1][y + cellY - 2] == player.initial or
+                 y + cellY - 2 != 0 and game.arrayGrid[x + cellX - 2][y + cellY - 2 - 1] == player.initial or
+                 y + cellY - 2 != 19 and game.arrayGrid[x + cellX - 2][y + cellY - 2 + 1] == player.initial):
             printInformation('Impossible')
             printInformation('Piece is too attached to his color')
             return False
@@ -257,13 +257,13 @@ def available(x, y):
         # Part of the piece is next to his color ?
         if not beginningTurn and \
                 (x + cellX - 2 != 0 and y + cellY - 2 != 0 and
-                 jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 1] == player.initial) or \
+                 game.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 - 1] == player.initial) or \
                 (x + cellX - 2 != 19 and y + cellY - 2 != 0 and
-                 jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 1] == player.initial) or \
+                 game.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 - 1] == player.initial) or \
                 (x + cellX - 2 != 0 and y + cellY - 2 != 19 and
-                 jeu.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 1] == player.initial) or \
+                 game.arrayGrid[x + cellX - 2 - 1][y + cellY - 2 + 1] == player.initial) or \
                 (x + cellX - 2 != 19 and y + cellY - 2 != 19 and
-                 jeu.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 1] == player.initial):
+                 game.arrayGrid[x + cellX - 2 + 1][y + cellY - 2 + 1] == player.initial):
             nextToColor = True
             print('Part of the piece is next to his color')
 
@@ -288,13 +288,13 @@ def pieceFollowing(event):
         fileImg = "pieces/piecesX2/{}".format(player.namePieceListImg[piece])
         img = PhotoImage(file=fileImg)
         temp[fileImg] = img
-        img = game.create_image(-330, -330, image=img, anchor='nw')
+        img = gameWindow.create_image(-330, -330, image=img, anchor='nw')
 
         if not x > 830 or x < 30 or y > 830 or y < 30:
-            jeu.updateGridTk(game)
-            x = int((event.x - jeu.offsetX) / sizeCells)
-            y = int((event.y - jeu.offsetY) / sizeCells)
-            game.coords(img, x * 40 - 50, y * 40 - 50)
+            game.updateGridTk(gameWindow)
+            x = int((event.x - game.offsetX) / sizeCells)
+            y = int((event.y - game.offsetY) / sizeCells)
+            gameWindow.coords(img, x * 40 - 50, y * 40 - 50)
     except:
         var = True
 
@@ -349,7 +349,7 @@ def playerStuck():
 
 
 def endGame():
-    saveGameBoard(jeu.arrayGrid)
+    saveGameBoard(game.arrayGrid)
     saveGamePieces(player1.namePieceList, player1.color)
     saveGamePieces(player2.namePieceList, player2.color)
     saveGamePieces(player3.namePieceList, player3.color)
