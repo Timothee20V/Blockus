@@ -309,8 +309,8 @@ def availablePiecesDisplay():
     informations.grid(row=0, column=1)
     printInformation(text)
 
-    lose = Button(informations, text='Joueur bloqué', command=playerStuck)
-    lose.place(x=329, y=150)
+    lose = Button(informations, text='Joueur bloqué', font=150, height=2, width=40, command=playerStuck)
+    lose.place(x=145, y=240)
 
     for i in range(5):
         for j in range(5):
@@ -339,8 +339,8 @@ def selectionPiece(num):
 
 def printInformation(text):
     informations.delete('all')
-    informations.create_text(329, 80, text='Les informations relatives au jeu actuel')
-    informations.create_text(329, 100, text=text)
+    informations.create_text(329, 80, text='Les informations relatives au jeu actuel', font=150)
+    informations.create_text(329, 120, text=text, font=150)
 
 
 def playerStuck():
