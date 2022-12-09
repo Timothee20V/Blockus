@@ -1,8 +1,6 @@
-
 def saveGameBoard(plateau):
     fileName = "save/save_plateau.txt"
     with open(fileName, "w") as file:
-        file.truncate(0)
         for ligne in range(len(plateau)):
             for colonne in plateau[ligne]:
                 file.writelines(str(colonne))
@@ -21,7 +19,6 @@ def saveGamePieces(grillePiece,color):
         fileName = "save/save_piecesY.txt"
 
     with open(fileName, "w") as file:
-        file.truncate(0)
         for key,value in grillePiece.items():
             file.write(str(key)+" "+value)
             file.write("\n")
@@ -30,7 +27,6 @@ def saveGamePieces(grillePiece,color):
 def saveDataTour(counter):
     fileName = "save/save_otherData.txt"
     with open(fileName, "w") as file:
-        file.truncate(0)
         file.write(str(counter))
     file.close()
 
@@ -65,6 +61,6 @@ def loadGamePiece(color):
 def loadDataCounter():
     returnData=[]
     with open("save/save_otherData.txt", "r") as file:
-     for line in file:
-        file.close()
-        return int(line)
+        for line in file:
+            file.close()
+            return int(line)

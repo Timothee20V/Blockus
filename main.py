@@ -1,8 +1,9 @@
 import grid as g
 import player as p
+import copy as c
 from save_load import *
 from tkinter import *
-from PIL import Image, ImageTk
+from PIL import Image
 from functools import partial
 import shutil
 
@@ -29,8 +30,12 @@ def count(mainCount):
 
 
 def takeCoord(event):
-    global player
+    global player, player1, player2, player3, player4
     global counterGame
+    global piece
+
+    if(event=="t"):
+        return 0
 
     x = int((event.x - jeu.offsetX) / sizeCells)
     y = int((event.y - jeu.offsetY) / sizeCells)
@@ -40,6 +45,20 @@ def takeCoord(event):
     if available(x, y):
         player.putPiece(piece - 1, (x, y))
         player.removePiece(piece)
+
+        print(player1.color)
+        print(player1.namePieceList)
+        print("\n")
+        print(player2.color)
+        print(player2.namePieceList)
+        print("\n")
+        print(player3.color)
+        print(player3.namePieceList)
+        print("\n")
+        print(player4.color)
+        print(player4.namePieceList)
+        print("\n")
+
         if counterGame == 0 and player1.surrend != True:
             player = player1
             counterGame += 1
@@ -50,7 +69,7 @@ def takeCoord(event):
             player = player3
             counterGame += 1
         elif counterGame == 3 and player4.surrend != True:
-            player = player4
+            player = player4    
             counterGame = 0
 
     jeu.updateGridTk(game)
@@ -58,6 +77,8 @@ def takeCoord(event):
 
 
 def modifPiece(event):
+    global piece,player
+
     if event.keysym == 'r':
         player.rotationPieces(piece)
         image = Image.open(player.namePieceListImg[piece])
@@ -77,6 +98,8 @@ def modifPiece(event):
 
 
 def available(x, y):
+    global piece,player
+
     for cell in player.pieceToCoord()[piece - 1]:
         cellX, cellY = cell
 
@@ -126,14 +149,14 @@ def pieceFollowing(event):
 
 
 def availablePiecesDisplay():
+    global player
+
     oX = 60
     oY = 300
     space = 10
 
     informations = Canvas(window, width=658, height=860)
     informations.grid(row=0, column=1)
-
-    print(player.namePieceList)
 
     for i in range(5):
         for j in range(5):
@@ -144,7 +167,7 @@ def availablePiecesDisplay():
                     num = 21
 
                 if num in player.namePieceList:
-                    fileImg = player.namePieceListImg[num]
+                    fileImg = player.namePieceListImg.get(num)
                     img = PhotoImage(file=fileImg)
                     temp[fileImg] = img
                     informations.create_image(oX + (100 + space) * j, oY + (100 + space) * i, image=img, anchor='nw')
@@ -162,6 +185,7 @@ def selectionPiece(num):
 
 
 def endGame():
+    global player1, player2, player3, player4
     playerBaseColor = [player1.color, player2.color, player3.color, player4.color]
     playerBaseNameList = [player1.namePieceList, player2.namePieceList, player3.namePieceList, player4.namePieceList]
     i = 0
@@ -174,38 +198,96 @@ def endGame():
     window.destroy()
 
 
-def reset():
-    global counterGame
+def reset(event):
+    if (event.keysym == 't'):
+        global counterGame, player, player1, player2, player3, player4, offsetX,offsetY
 
-    plateauSave = [['0' for i in range(20)] for j in range(20)]
-    saveGameBoard(plateauSave)
-    saveDataTour(1)
+        takeCoord("t")
 
-    playerBase = ["red", "blue", "green", "yellow"]
-    namePieceListBase = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
-                         5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
-                         9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
-                         13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
-                         17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
-                         21: "pieces/piece21"
-                         }
-    for playerName in playerBase:
-        saveGamePieces(namePieceListBase, playerName)
+        plateauSave = [['0' for i in range(20)] for j in range(20)]
+        saveGameBoard(plateauSave)
+        saveDataTour(1)
 
-    player1.namePieceList = namePieceListBase
-    player2.namePieceList = namePieceListBase
-    player3.namePieceList = namePieceListBase
-    player4.namePieceList = namePieceListBase
+        playerBase = ["red", "blue", "green", "yellow"]
 
-    counterGame = loadDataCounter()
+        namePieceListBase = {1: "pieces/piece1", 2: "pieces/piece2", 3: "pieces/piece3", 4: "pieces/piece4",
+                            5: "pieces/piece5", 6: "pieces/piece6", 7: "pieces/piece7", 8: "pieces/piece8",
+                            9: "pieces/piece9", 10: "pieces/piece10", 11: "pieces/piece11", 12: "pieces/piece12",
+                            13: "pieces/piece13", 14: "pieces/piece14", 15: "pieces/piece15", 16: "pieces/piece16",
+                            17: "pieces/piece17", 18: "pieces/piece18", 19: "pieces/piece19", 20: "pieces/piece20",
+                            21: "pieces/piece21"
+                            }
 
-    game.delete('all')
-    jeu.creationArrayGrid(loadGameBoard())
-    jeu.creationGridTk(game)
+        for playerName in playerBase:
+            saveGamePieces(namePieceListBase, playerName)
 
-    game.create_rectangle(offsetX, offsetY, 830, 830)
+        for color in playerBase:
+
+            namePieceListBaseImg = {1: "pieces/{}/piece1.png".format(color),
+                            2: "pieces/{}/piece2.png".format(color),
+                            3: "pieces/{}/piece3.png".format(color),
+                            4: "pieces/{}/piece4.png".format(color),
+                            5: "pieces/{}/piece5.png".format(color),
+                            6: "pieces/{}/piece6.png".format(color),
+                            7: "pieces/{}/piece7.png".format(color),
+                            8: "pieces/{}/piece8.png".format(color),
+                            9: "pieces/{}/piece9.png".format(color),
+                            10: "pieces/{}/piece10.png".format(color),
+                            11: "pieces/{}/piece11.png".format(color),
+                            12: "pieces/{}/piece12.png".format(color),
+                            13: "pieces/{}/piece13.png".format(color),
+                            14: "pieces/{}/piece14.png".format(color),
+                            15: "pieces/{}/piece15.png".format(color),
+                            16: "pieces/{}/piece16.png".format(color),
+                            17: "pieces/{}/piece17.png".format(color),
+                            18: "pieces/{}/piece18.png".format(color),
+                            19: "pieces/{}/piece19.png".format(color),
+                            20: "pieces/{}/piece20.png".format(color),
+                            21: "pieces/{}/piece21.png".format(color)
+                            }
+
+            if (color == player1.color):
+                player1.namePieceList = loadGamePiece(player1.color)
+                player1.namePieceListImg = namePieceListBaseImg
+                player = player1
+                counterGame = 1
+            elif (color == player2.color):
+                player2.namePieceList = loadGamePiece(player2.color)
+                player2.namePieceListImg = namePieceListBaseImg
+            elif (color == player3.color):
+                player3.namePieceList = loadGamePiece(player3.color)
+                player3.namePieceListImg = namePieceListBaseImg
+            elif (color == player4.color):
+                player4.namePieceList = loadGamePiece(player4.color)
+                player4.namePieceListImg = namePieceListBaseImg
+
+        print(player1.color)
+        print(player1.namePieceList)
+        print("\n")
+        print(player2.color)
+        print(player2.namePieceList)
+        print("\n")
+        print(player3.color)
+        print(player3.namePieceList)
+        print("\n")
+        print(player4.color)
+        print(player4.namePieceList)
+        print("\n")
+
+
+        game.delete('all')
+        jeu.creationArrayGrid(loadGameBoard())
+        
+        game.create_rectangle(offsetX, offsetY, 830, 830)
+        game.create_line(871, 0, 871, 860, width=2)
+        
+        jeu.creationGridTk(game)
+
+        availablePiecesDisplay()
+        jeu.updateGridTk(game)
     availablePiecesDisplay()
-    jeu.updateGridTk(game)
+        
+
 
 
 mainCount = 0
@@ -265,7 +347,7 @@ game.bind('<Button-1>', takeCoord)
 
 window.bind('<Escape>', lambda e: endGame())
 window.bind('<Key>', modifPiece)
-window.bind('<t>', lambda e: reset())
+window.bind('<Key>', reset)
 game.bind('<Motion>', pieceFollowing)
 
 window.mainloop()
